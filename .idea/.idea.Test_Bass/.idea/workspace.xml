@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9aa776c1-0405-48cc-8731-9699b655d360" name="Default Changelist" comment="[Fix]: Switching music in IMusicPlayer now resets the parts.">
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/Audio3DPosition.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/Audio3DPosition.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Test_Bass/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Test_Bass/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Test_Bass/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Test_Bass/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/BassAudioHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/BassAudioHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/BassMusic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/BassMusic.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/BassAudioManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/BassAudioManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/BassMusicPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/BassMusicPlayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/IAudioPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/IAudioPlayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/IMusicPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/IMusicPlayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/IAudioHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/IAudioHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/IMusic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/IMusic.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/MusicInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/MusicInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/MusicInfoParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/MusicInfoParser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/MusicPart.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/MusicPart.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Test/Audio/Behaviour/PauseButton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Test/Audio/Behaviour/PauseButton.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Test/Audio/Behaviour/StartButton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Test/Audio/Behaviour/StartButton.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/BC2876E8-FF0B-42A2-A2A1-1B51F2B23C8A/cd/487404e8/AudioClipPlayable.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6535C333-BC35-425E-B420-D6A3AF5DD0D6/84/b6449641/BASSActive.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6535C333-BC35-425E-B420-D6A3AF5DD0D6/d3/ca7651e5/Bass.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E98ED036-8295-432E-8C11-E52D6243EE11/0f/35324b67/Display.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/BC2876E8-FF0B-42A2-A2A1-1B51F2B23C8A/c7/51d13de6/AudioClip.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6535C333-BC35-425E-B420-D6A3AF5DD0D6/e6/62d5fc2f/Utils.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/ChannelChangeTrigger.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/PauseTrigger.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/MusicTextParser.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/MusicTextInfoParser.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/CurrentChannelObject.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Utils/ArrayUtil.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Utility/ArrayUtil.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Utility/Array.cs" />
+        <option value="$PROJECT_DIR$/Assets/ThirdParties/fullserializer/Aot/Editor/fsAotConfigurationEditor.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/MusicClip.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/IAudioFile.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/StopButton.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/CurrentPartSelector.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/CurrentPart.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/CurrentState.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/Music.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/IAudioManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/MusicPlayer.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/StartButton.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/PauseButton.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/PlayingText.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/BPMText.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/IO/Behaviour/CameraMovement.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/TitleText.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/CommentText.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/BpmChangeButton.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/PartMuteButton.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/MusicCurrentState.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/PartChangeButton.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/MusicSwitchButton.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/PartText.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Utility/ArrayUtility.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Utility/MathsUtility.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/BpmText.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/IMusicPlayer.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/Behaviour/PauseButton.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/Audio3DPosition.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/IAudioPlayer.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/IMusic.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/BassMusic.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/BassAudioManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Test/Audio/Behaviour/StartButton.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/BassMusicPlayer.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/MusicInfo.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/MusicInfoParser.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/MusicPart.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/IAudioHandler.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Audio/BassAudioHandler.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectId" id="1j0mTHrRQO5b0uEBxwYFUXVXsn5" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.26706392" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.30119178" />
+    <property name="Discover.Launch.Via.Unity" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="XThreadsFramesViewSplitterKey" value="0.43220338" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C#" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="selectedOptions">
+        <set />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="5688">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" value="5688" />
+      <option name="selectedOptions">
+        <set />
+      </option>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9aa776c1-0405-48cc-8731-9699b655d360" name="Default Changelist" comment="" />
+      <created>1602949391916</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1602949391916</updated>
+      <workItem from="1602949399243" duration="20456000" />
+      <workItem from="1602974693389" duration="3539000" />
+      <workItem from="1603008161564" duration="9804000" />
+      <workItem from="1603018447855" duration="518000" />
+      <workItem from="1603019213476" duration="9015000" />
+      <workItem from="1603028280824" duration="29739000" />
+      <workItem from="1603090889418" duration="8112000" />
+      <workItem from="1603116553849" duration="14045000" />
+      <workItem from="1603130969300" duration="3296000" />
+    </task>
+    <task id="LOCAL-00001" summary="[Fix]: Switching music in IMusicPlayer now resets the parts.">
+      <created>1603096360886</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1603096360886</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="[Fix]: Switching music in IMusicPlayer now resets the parts." />
+    <option name="LAST_COMMIT_MESSAGE" value="[Fix]: Switching music in IMusicPlayer now resets the parts." />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="0" y="348" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602949544312">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="0" y="348" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1602949544312" />
+    <state x="147" y="324" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1602960303704">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="147" y="324" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1602960303704" />
+    <state x="695" y="364" key="ANALYSIS_DLG_com.jetbrains.rider.actions.impl.cleanup.RiderCodeCleanupAction$actionPerformed$dlg$1" timestamp="1603038720894">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="695" y="364" key="ANALYSIS_DLG_com.jetbrains.rider.actions.impl.cleanup.RiderCodeCleanupAction$actionPerformed$dlg$1/0.0.1920.1040@0.0.1920.1040" timestamp="1603038720894" />
+    <state width="1877" height="274" key="GridCell.Tab.0.bottom" timestamp="1603131747520">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603131747520" />
+    <state width="1877" height="274" key="GridCell.Tab.0.center" timestamp="1603131747519">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603131747519" />
+    <state width="1877" height="274" key="GridCell.Tab.0.left" timestamp="1603131747519">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603131747519" />
+    <state width="1877" height="274" key="GridCell.Tab.0.right" timestamp="1603131747520">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603131747520" />
+    <state width="1877" height="274" key="GridCell.Tab.1.bottom" timestamp="1603131762297">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603131762297" />
+    <state width="1877" height="274" key="GridCell.Tab.1.center" timestamp="1603131762296">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603131762296" />
+    <state width="1877" height="274" key="GridCell.Tab.1.left" timestamp="1603131762296">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603131762296" />
+    <state width="1877" height="274" key="GridCell.Tab.1.right" timestamp="1603131762296">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603131762296" />
+    <state width="1877" height="274" key="GridCell.Tab.2.bottom" timestamp="1603131747180">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.2.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603131747180" />
+    <state width="1877" height="274" key="GridCell.Tab.2.center" timestamp="1603131747180">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.2.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603131747180" />
+    <state width="1877" height="274" key="GridCell.Tab.2.left" timestamp="1603131747180">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.2.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603131747180" />
+    <state width="1877" height="274" key="GridCell.Tab.2.right" timestamp="1603131747180">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603131747180" />
+    <state width="1877" height="274" key="GridCell.Tab.3.bottom" timestamp="1603131747181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.3.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603131747181" />
+    <state width="1877" height="274" key="GridCell.Tab.3.center" timestamp="1603131747181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.3.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603131747181" />
+    <state width="1877" height="274" key="GridCell.Tab.3.left" timestamp="1603131747180">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.3.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603131747180" />
+    <state width="1877" height="274" key="GridCell.Tab.3.right" timestamp="1603131747181">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="274" key="GridCell.Tab.3.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603131747181" />
+    <state x="0" y="328" key="SettingsEditor" timestamp="1603050424870">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="0" y="328" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1603050424870" />
+    <state x="92" y="92" width="1736" height="856" key="VCS.FileHistoryDialog" timestamp="1603117959685">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="92" y="92" width="1736" height="856" key="VCS.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1603117959685" />
+    <state x="551" y="252" key="Vcs.Push.Dialog.v2" timestamp="1603096368601">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="551" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1603096368601" />
+    <state width="968" height="528" key="XDebugger.FullValuePopup" timestamp="1603130517203">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="968" height="528" key="XDebugger.FullValuePopup/0.0.1920.1040@0.0.1920.1040" timestamp="1603130517203" />
+    <state x="741" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1603096249693">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="741" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1603096249693" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1602971719918">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1602971719918" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1603119020824">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603119020824" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Audio/Behaviour/BassMusicPlayer.cs</url>
+          <line>110</line>
+          <properties documentPath="C:\Users\binabik\Documents\projets_unity\Test_Bass\Assets\Scripts\Audio\Behaviour\BassMusicPlayer.cs" initialLine="112">
+            <startOffsets>
+              <option value="3141" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3155" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="Type#Audio.Behaviour.BassMusicPlayer" memberName="NumberParts" />
+        <PinnedItemInfo parentTag="Type#Audio.MusicInfo" memberName="m_parts" />
+        <PinnedItemInfo parentTag="Frame#Audio.Behaviour.BassMusicPlayer.LoadInfo" memberName="patterns" />
+        <PinnedItemInfo parentTag="Frame#Audio.Behaviour.BassMusicPlayer.LoadInfo" memberName="message" />
+        <PinnedItemInfo parentTag="Type#Audio.MusicInfoParser+SerialisedMusicInfo" memberName="Comment" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+</project>
