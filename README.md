@@ -7,9 +7,11 @@
 ##### To do
 
 
-- [ ] Look for documentation on RenderType (seems to be only a keyword in some JSON data), find out under which category do UI elements generally fall.
-- [ ] Look for alternatives to Repalced Shaders with our constraifallnts.
-- [ ] Start writing actual code.
+- [x] Look for documentation on RenderType (seems to be only a keyword in some JSON data), find out under which category do UI elements generally fall.
+- [x] Look for alternatives to Replaced Shaders with our constraints.
+- [x] Automatically save each type of RenderTextures inside folders.
+- [x] Render Depth and View with Command Buffers inside Render Textures.
+- [ ] Render Motion Vectors.
 
 ##### Constraints
 
@@ -55,6 +57,7 @@ A) Full render pass with replaced shaders. [^3]
 	* Running on the assumption that the user-defined shaders do not generally defined such tags, the rule we make should exclude the few unwanted objects rather than include a large list of wanted ones.
 	* So far, I can only think of `Background` (skyboxes).
 
+B) Blit with Command Buffers.
 
 
 ##### Specifics
