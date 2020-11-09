@@ -31,20 +31,20 @@
 				float4 vertex : SV_POSITION;
 			};
 
-			uniform sampler2D _Motion; uniform float4 _Motion_ST;
+			uniform sampler2D _View; uniform float4 _View_ST;
 			
 			v2f vert (appdata v)
 			{
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.uv = TRANSFORM_TEX(v.uv, _Motion);
+				o.uv = TRANSFORM_TEX(v.uv, _View);
 				return o;
 			}
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
 				// sample the texture
-				fixed4 col = tex2D(_Motion, i.uv);
+				fixed4 col = tex2D(_View, i.uv);
 				return col;
 			}
 			ENDCG

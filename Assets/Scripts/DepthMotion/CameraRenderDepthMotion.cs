@@ -3,6 +3,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Assertions; 
 using UnityEditor;
 using System.IO;
+using System;
 
 namespace DepthMotion
 {
@@ -63,7 +64,7 @@ namespace DepthMotion
         
         void RenderDepthMotion()
         {
-            // SaveFrame();
+            SaveFrame();
         }
 
         void FreeAll()
@@ -83,13 +84,21 @@ namespace DepthMotion
         {
             m_cam = GetComponent<Camera>();
             m_cam.allowDynamicResolution = false;
-            m_cam.depthTextureMode = DepthTextureMode.Depth | DepthTextureMode.MotionVectors;
+
+            m_downscaledCameraObject = new GameObject();
+            m_downscaledCamera = m_downscaledCameraObject.AddComponent<Camera>();
+            
+            m_downscaledCamera.CopyFrom(m_cam);
+            m_downscaledCamera.depthTextureMode = DepthTextureMode.Depth | DepthTextureMode.MotionVectors;
+            
+            m_downscaledCamera.transform.SetParent(gameObject.transform);
+            m_downscaledCameraObject.SetActive(false);
             // Add callback on end of rendering of frame.
             // Used by Custom Rendering Piplines,
             // as a stand-in for OnPostRender.
             // RenderPipelineManager.endCameraRendering += EndCameraRendering;
             
-            // For now will use Shader Replacement.
+            // For now will use not Shader Replacement.
             m_blitViewCommand = new CommandBuffer   { name = "view" };
             m_blitDepthCommand  = new CommandBuffer { name = "depth" };
             m_blitMotionCommand = new CommandBuffer { name = "motion" };
@@ -102,7 +111,7 @@ namespace DepthMotion
             m_blitDepthCommand.GetTemporaryRT(m_depthId, m_downscaledDim.x, m_downscaledDim.y, 0);
             m_blitMotionCommand.GetTemporaryRT(m_motionId, m_downscaledDim.x, m_downscaledDim.y, 0);
             
-            m_blitViewCommand.SetGlobalTexture(c_viewTag, m_view);
+            m_blitViewCommand.SetGlobalTexture(c_viewTag, m_viewId);
             m_blitDepthCommand.SetGlobalTexture(c_depthTag, m_depthId);
             m_blitMotionCommand.SetGlobalTexture(c_motionTag, m_motionId);
             
@@ -121,8 +130,8 @@ namespace DepthMotion
             */
 
             m_blitViewCommand.Blit(
-                BuiltinRenderTextureType.CameraTarget, 
-                m_view
+                BuiltinRenderTextureType.MotionVectors, 
+                m_viewId
                 );
             m_blitDepthCommand.Blit(
                 BuiltinRenderTextureType.Depth, 
@@ -140,11 +149,11 @@ namespace DepthMotion
                 CameraEvent.AfterEverything,
                 m_blitViewCommand
                 );
-            m_cam.AddCommandBuffer(
+            m_downscaledCamera.AddCommandBuffer(
                 CameraEvent.AfterDepthTexture,
                 m_blitDepthCommand
                 );
-            m_cam.AddCommandBuffer(
+            m_downscaledCamera.AddCommandBuffer(
                 CameraEvent.AfterEverything,
                 m_blitMotionCommand
                 );
@@ -172,7 +181,7 @@ namespace DepthMotion
                 m_downscaledDim.x, 
                 m_downscaledDim.y, 
                 0,
-                RenderTextureFormat.ARGB32
+                RenderTextureFormat.RG16
             );
             
             m_depth = new RenderTexture(
@@ -208,32 +217,23 @@ namespace DepthMotion
         }
         #endregion
 
-        #region Save routine
-
+        #region Saving routine
+        
         void CreateFileTree()
         {
-            string rootGuid = AssetDatabase.AssetPathToGUID(
-                Path.Combine("Assets", "Editor", c_outputRootDir)
-            );
+            if (!DoesFolderExist(c_outputRootDir))
+            {
+               CreateFolder("Editor", c_outputRootDir); 
+            }
+            string timeStamp = DateTime.Now.ToString("yy_MM_dd_hhmmss");
 
-            string timeStamp = System.DateTime.Now.ToString("yy_MM_dd_hhmmss");
-            string outputDirGuid = AssetDatabase.CreateFolder(
-                AssetDatabase.GUIDToAssetPath(rootGuid),
-                timeStamp
-            );
+            string outputRootPath = Path.Combine("Editor", c_outputRootDir);
+            m_outputPath = CreateFolder(outputRootPath, timeStamp);
 
-            m_viewDirGuid = AssetDatabase.CreateFolder(
-                AssetDatabase.GUIDToAssetPath(outputDirGuid),
-                c_viewDir
-            );
-            m_depthDirGuid = AssetDatabase.CreateFolder(
-                AssetDatabase.GUIDToAssetPath(outputDirGuid),
-                c_depthDir
-            );
-            m_motionDirGuid = AssetDatabase.CreateFolder(
-                AssetDatabase.GUIDToAssetPath(outputDirGuid),
-                c_motionDir
-            );
+
+            CreateFolder(m_outputPath, c_viewDir);
+            CreateFolder(m_outputPath, c_depthDir);
+            CreateFolder(m_outputPath, c_motionDir);
         }
 
         void SaveFrame()
@@ -241,32 +241,26 @@ namespace DepthMotion
             SaveTexture(
                 m_view,  
                 m_texture2D, 
-                Path.Combine(
-                    AssetDatabase.GUIDToAssetPath(m_viewDirGuid),
-                    m_currentFrameIndex.ToString()
-                )
+                Path.Combine(m_outputPath, c_viewDir),
+                m_currentFrameIndex.ToString()
             );
-            
+
             SaveTexture(
-                m_depth,  
-                m_downscaledTexture2D, 
-                Path.Combine(
-                    AssetDatabase.GUIDToAssetPath(m_depthDirGuid),
-                    m_currentFrameIndex.ToString()
-                )
+                m_depth,
+                m_downscaledTexture2D,
+                Path.Combine(m_outputPath, c_depthDir),
+                m_currentFrameIndex.ToString()
             );
             
             SaveTexture(
                 m_motion,  
                 m_downscaledTexture2D, 
-                Path.Combine(
-                    AssetDatabase.GUIDToAssetPath(m_motionDirGuid),
-                    m_currentFrameIndex.ToString()
-                )
+                Path.Combine(m_outputPath, c_viewDir),
+                m_currentFrameIndex.ToString()
             );
         }
 
-        static void SaveTexture(RenderTexture renderTexture, Texture2D texture2D, string path)
+        static void SaveTexture(RenderTexture renderTexture, Texture2D texture2D, string dirPath, string fileName)
         {
             const string extension = ".png";
             RenderTexture previous = RenderTexture.active;
@@ -274,11 +268,61 @@ namespace DepthMotion
             texture2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
             texture2D.Apply();
             RenderTexture.active = previous;
-            File.WriteAllBytes(
-                Path.ChangeExtension(path, extension), 
-                texture2D.EncodeToPNG()
-                );
+            CreateFile(texture2D.EncodeToPNG(), dirPath, fileName, extension);
         }
+        
+
+        #endregion
+
+        #region IO utility
+
+
+        /**
+         * @returns System path of root dir (child of Project/ dir)
+         * @warning Only works in Editor mode.
+         */
+        static string GetProjectRootFolderPath(string rootDir)
+        {
+            return Path.Combine(Path.GetDirectoryName(Application.dataPath), rootDir);
+        }
+
+        /**
+         * Create a folder in Project from root directory.
+         * 
+         * @param parentPath Name of the parent path from Project root.
+         * @param dir Name of the folder to create.
+         *
+         * @returns Path from Project root of newly created directory.
+         */
+        static string CreateFolder(string parentPath, string dir)
+        {
+            Directory.CreateDirectory(Path.Combine(GetProjectRootFolderPath(parentPath), dir));
+            return Path.Combine(parentPath, dir);
+        }
+
+        /**
+         * Checks whether the Project directory exists.
+         * @param dirPath Path of the dir from Project root.
+         */
+        static bool DoesFolderExist(string dirPath)
+        {
+            return Directory.Exists(GetProjectRootFolderPath(dirPath));
+        }
+
+        /**
+         * Create a file and write data to it.
+         * @param filePath Path of file from Project root.
+         * @param data Byte array of data.
+         */
+        static void CreateFile(byte[] data, string dirPath, string fileName, string extension = "")
+        {
+            File.WriteAllBytes(
+                GetProjectRootFolderPath(Path.Combine(dirPath, Path.ChangeExtension(fileName, extension))),
+                data
+                );
+            
+        }
+
         #endregion
         
         #region Private data
@@ -312,14 +356,12 @@ namespace DepthMotion
         int m_currentFrameIndex;
         Texture2D m_texture2D;
         Texture2D m_downscaledTexture2D;
-        
-        string m_viewDirGuid;
-        string m_motionDirGuid;
-        string m_depthDirGuid;
 
-        const string c_viewTag   = "_View";
-        const string c_depthTag  = "_Depth";
+        const string c_viewTag   = "_Depth";
+        const string c_depthTag  = "_View";
         const string c_motionTag = "_Motion";
+
+        string m_outputPath;
 
         const string c_outputRootDir = "OutputData";
         const string c_viewDir       = "View";
