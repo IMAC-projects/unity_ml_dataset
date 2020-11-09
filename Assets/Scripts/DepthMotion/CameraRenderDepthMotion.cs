@@ -77,10 +77,12 @@ namespace DepthMotion
             RenderTexture.ReleaseTemporary(m_view);
             RenderTexture.ReleaseTemporary(m_motion);
             RenderTexture.ReleaseTemporary(m_depth);
+            RenderTexture.ReleaseTemporary(m_frameBuffer);
 #else
             m_view.Release();
             m_motion.Release();
             m_depth.Release();
+            m_frameBuffer.Release();
 #endif
 
             RenderPipelineManager.endCameraRendering -= EndCameraRendering;
@@ -99,20 +101,15 @@ namespace DepthMotion
             // Signal that the camera should compute and store Depth and Motion Vectors both.
             m_cam.depthTextureMode = DepthTextureMode.Depth | DepthTextureMode.MotionVectors;
             
-            m_downscaledCameraObject = new GameObject();
-            m_downscaledCamera = m_downscaledCameraObject.AddComponent<Camera>();
-            
-            m_downscaledCamera.transform.SetParent(gameObject.transform);
-            m_downscaledCameraObject.SetActive(false);
             // Add callback on end of rendering of frame.
             // Used by Custom Rendering Piplines,
             // as a stand-in for OnPostRender.
             // RenderPipelineManager.endCameraRendering += EndCameraRendering;
             
             // For now will use not Shader Replacement.
-            m_blitViewCommand = new CommandBuffer   { name = "view" };
-            m_blitDepthCommand  = new CommandBuffer { name = "depth" };
-            m_blitMotionCommand = new CommandBuffer { name = "motion" };
+            m_blitViewCommand = new CommandBuffer   { name = "BlitCommandView" };
+            m_blitDepthCommand  = new CommandBuffer { name = "BlitCommandDepth" };
+            m_blitMotionCommand = new CommandBuffer { name = "BlitCommandMotionVectors" };
 
             
             // should set each render target as active for the corresponding buffer
@@ -125,7 +122,7 @@ namespace DepthMotion
             // Add a Clear action on current render target.
             m_blitViewCommand.ClearRenderTarget(true, true, Color.clear);
             m_blitDepthCommand.ClearRenderTarget(true, true, Color.clear);
-            m_blitMotionCommand.ClearRenderTarget(true, true, Color.clear);
+            // m_blitMotionCommand.ClearRenderTarget(true, true, Color.clear);
 
             // TODO: Figure out which BuiltinRenderTextureType and CameraEvent to get framebuffer
             // Now, having the frame debugger helps a lot.
@@ -155,13 +152,13 @@ namespace DepthMotion
                 m_blitDepthCommand
                 );
             m_cam.AddCommandBuffer(
-                CameraEvent.AfterLighting,
+                CameraEvent.BeforeImageEffectsOpaque,
                 m_blitMotionCommand
                 );
             
             // Shader Replacement part.
+            // Will need to have an additional Camera, I think??
             /*
-            m_cam.targetTexture = m_view;
             m_downscaledCameraObject = new GameObject();
             m_downscaledCameraObject.SetActive(false);
             m_downscaledCamera = m_downscaledCameraObject.AddComponent<Camera>();
@@ -182,7 +179,7 @@ namespace DepthMotion
             m_motion = RenderTexture.GetTemporary(
                 m_downscaledDim.x, 
                 m_downscaledDim.y, 
-                0,
+                16,
                 RenderTextureFormat.RGHalf
             );
 
@@ -272,7 +269,6 @@ namespace DepthMotion
 
             string outputRootPath = Path.Combine("Editor", c_outputRootDir);
             m_outputPath = CreateFolder(outputRootPath, timeStamp);
-
 
             CreateFolder(m_outputPath, c_viewDir);
             CreateFolder(m_outputPath, c_depthDir);
