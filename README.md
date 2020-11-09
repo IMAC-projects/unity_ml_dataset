@@ -6,10 +6,17 @@
 
 ##### To do
 
+A) IO and plug-in considerations
 
-- [x] Look for documentation on RenderType (seems to be only a keyword in some JSON data), find out under which category do UI elements generally fall.
 - [x] Look for alternatives to Replaced Shaders with our constraints.
 - [x] Automatically save each type of RenderTextures inside folders.
+
+B) Shader Replacement
+
+- [ ] Look for documentation on RenderType (seems to be only a keyword in some JSON data), find out under which category do UI elements generally fall.
+
+
+C) Command Buffers
 - [x] Render Depth and View with Command Buffers inside Render Textures.
 - [ ] Render Motion Vectors.
 
@@ -19,7 +26,6 @@
 * Default depth texture mode in Unity does not render some objects.[^1]
 	* whose material's shader has no shader caster pass. (might be an issue)
 	* not opaque (render queue > 2500)
-
 
 
 * The depth texture we use should have transparent objects in it.
@@ -45,7 +51,7 @@ deteriorate the Networks' upscaling, because it heavily relies
 on accurate Depth map, Motion Vectors etc.
 
 
-_ Same thing about mipmapping the texture -> harmful
+* Same thing about mipmapping the texture -> harmful
 
 ##### Our options
 
@@ -59,8 +65,13 @@ A) Full render pass with replaced shaders. [^3]
 
 B) Blit with Command Buffers.
 
+* That's what I'm trying until now.
 
 ##### Specifics
+
+* Regarding Legacy,  and Universal Render Pipelines I found a document listing
+all the features that were missing and / or planned from URP around 2018,
+it's still helpful. [^4]
 
 
 * Should effects be predicted using the network?   
@@ -82,3 +93,5 @@ the same, their depth value will be the max depth value
 [2^]: https://docs.unity3d.com/Manual/DynamicResolution.html
 
 [^3]: https://docs.unity3d.com/Manual/SL-ShaderReplacement.html
+
+[^4]: https://docs.google.com/spreadsheets/d/1nlS8m1OXStUK4A6D7LTOyHr6aAxIaA2r3uaNf9FZRTI/edit#gid=0
