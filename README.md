@@ -4,7 +4,7 @@
 
 ### Research
 
-##### To do
+#### To do
 
 A) IO and plug-in considerations
 
@@ -20,7 +20,7 @@ C) Command Buffers
 - [x] Render Depth and View with Command Buffers inside Render Textures.
 - [ ] Render Motion Vectors.
 
-##### Constraints
+#### Constraints
 
 
 * Default depth texture mode in Unity does not render some objects.[^1]
@@ -53,7 +53,7 @@ on accurate Depth map, Motion Vectors etc.
 
 * Same thing about mipmapping the texture -> harmful
 
-##### Our options
+#### Our options
 
 
 A) Full render pass with replaced shaders. [^3]
@@ -67,7 +67,7 @@ B) Blit with Command Buffers.
 
 * That's what I'm trying until now.
 
-##### Specifics
+#### Specifics
 
 * Regarding Legacy,  and Universal Render Pipelines I found a document listing
 all the features that were missing and / or planned from URP around 2018,
