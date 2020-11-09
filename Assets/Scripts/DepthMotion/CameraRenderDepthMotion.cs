@@ -1,20 +1,24 @@
-﻿using UnityEngine; 
+﻿
+#define USE_TEMPORARY_RT
+
+using UnityEngine; 
 using UnityEngine.Rendering; 
 using UnityEngine.Assertions; 
-using UnityEditor;
 using System.IO;
 using System;
+
 
 namespace DepthMotion
 {
     [RequireComponent(typeof(Camera))]
     public class CameraRenderDepthMotion : MonoBehaviour
     {
-        public Vector2Int dim;
+        public Vector2Int dim = new Vector2Int(1920, 1080);
         [RangeAttribute(2, 8)]
-        public int downscalingFactor;
+        public int downscalingFactor = 4;
 
-        [RangeAttribute(1, 500)] public int samplingStep;
+        [RangeAttribute(1, 500)]
+        public int samplingStep = 50;
         
         #region MonoBehaviour Events
 
@@ -69,9 +73,15 @@ namespace DepthMotion
 
         void FreeAll()
         {
+#if (USE_TEMPORARY_RT)
+            RenderTexture.ReleaseTemporary(m_view);
+            RenderTexture.ReleaseTemporary(m_motion);
+            RenderTexture.ReleaseTemporary(m_depth);
+#else
             m_view.Release();
             m_motion.Release();
             m_depth.Release();
+#endif
 
             RenderPipelineManager.endCameraRendering -= EndCameraRendering;
         }
@@ -85,11 +95,12 @@ namespace DepthMotion
             m_cam = GetComponent<Camera>();
             m_cam.allowDynamicResolution = false;
 
+            m_cam.targetTexture = m_frameBuffer;
+            // Signal that the camera should compute and store Depth and Motion Vectors both.
+            m_cam.depthTextureMode = DepthTextureMode.Depth | DepthTextureMode.MotionVectors;
+            
             m_downscaledCameraObject = new GameObject();
             m_downscaledCamera = m_downscaledCameraObject.AddComponent<Camera>();
-            
-            m_downscaledCamera.CopyFrom(m_cam);
-            m_downscaledCamera.depthTextureMode = DepthTextureMode.Depth | DepthTextureMode.MotionVectors;
             
             m_downscaledCamera.transform.SetParent(gameObject.transform);
             m_downscaledCameraObject.SetActive(false);
@@ -103,43 +114,33 @@ namespace DepthMotion
             m_blitDepthCommand  = new CommandBuffer { name = "depth" };
             m_blitMotionCommand = new CommandBuffer { name = "motion" };
 
-            m_viewId   = Shader.PropertyToID(c_viewTag);
-            m_depthId  = Shader.PropertyToID(c_depthTag);
-            m_motionId = Shader.PropertyToID(c_motionTag);
             
-            m_blitViewCommand.GetTemporaryRT(m_viewId, -1, -1, 0);
-            m_blitDepthCommand.GetTemporaryRT(m_depthId, m_downscaledDim.x, m_downscaledDim.y, 0);
-            m_blitMotionCommand.GetTemporaryRT(m_motionId, m_downscaledDim.x, m_downscaledDim.y, 0);
-            
-            m_blitViewCommand.SetGlobalTexture(c_viewTag, m_viewId);
-            m_blitDepthCommand.SetGlobalTexture(c_depthTag, m_depthId);
-            m_blitMotionCommand.SetGlobalTexture(c_motionTag, m_motionId);
-            
-            /*
             // should set each render target as active for the corresponding buffer
             // then signal that the latter should render in its active target.
-            
             m_blitViewCommand.SetRenderTarget(m_view);
             m_blitDepthCommand.SetRenderTarget(m_depth);
             m_blitMotionCommand.SetRenderTarget(m_motion);
-
+            
             // they actually included the english spelling for 'grey'. wow.
-            m_blitViewCommand.ClearRenderTarget(true, true, Color.grey);
-            m_blitDepthCommand.ClearRenderTarget(true, true, Color.green);
-            m_blitMotionCommand.ClearRenderTarget(true, true, Color.blue);
-            */
+            // Add a Clear action on current render target.
+            m_blitViewCommand.ClearRenderTarget(true, true, Color.clear);
+            m_blitDepthCommand.ClearRenderTarget(true, true, Color.clear);
+            m_blitMotionCommand.ClearRenderTarget(true, true, Color.clear);
 
+            // TODO: Figure out which BuiltinRenderTextureType and CameraEvent to get framebuffer
+            // Now, having the frame debugger helps a lot.
+            // Add a Blit action.
             m_blitViewCommand.Blit(
-                BuiltinRenderTextureType.MotionVectors, 
-                m_viewId
+                BuiltinRenderTextureType.CameraTarget, 
+                m_view
                 );
             m_blitDepthCommand.Blit(
                 BuiltinRenderTextureType.Depth, 
-                m_depthId
+                m_depth
                 );
             m_blitMotionCommand.Blit(
                 BuiltinRenderTextureType.MotionVectors, 
-                m_motionId
+                m_motion
                 );
             
             // TODO: figure out at which CameraEvent we should get the motion vectors.
@@ -149,12 +150,12 @@ namespace DepthMotion
                 CameraEvent.AfterEverything,
                 m_blitViewCommand
                 );
-            m_downscaledCamera.AddCommandBuffer(
+            m_cam.AddCommandBuffer(
                 CameraEvent.AfterDepthTexture,
                 m_blitDepthCommand
                 );
-            m_downscaledCamera.AddCommandBuffer(
-                CameraEvent.AfterEverything,
+            m_cam.AddCommandBuffer(
+                CameraEvent.AfterLighting,
                 m_blitMotionCommand
                 );
             
@@ -170,6 +171,35 @@ namespace DepthMotion
 
         void PrepareTextures()
         {
+#if (USE_TEMPORARY_RT)
+            m_view = RenderTexture.GetTemporary(
+                dim.x, 
+                dim.y, 
+                0,
+                RenderTextureFormat.ARGB32
+                );
+
+            m_motion = RenderTexture.GetTemporary(
+                m_downscaledDim.x, 
+                m_downscaledDim.y, 
+                0,
+                RenderTextureFormat.RGHalf
+            );
+
+            m_depth = RenderTexture.GetTemporary(
+                m_downscaledDim.x, 
+                m_downscaledDim.y, 
+                16,
+                RenderTextureFormat.ARGB32
+            );
+
+            m_frameBuffer = RenderTexture.GetTemporary(
+                dim.x, 
+                dim.y, 
+                0,
+                RenderTextureFormat.ARGB32
+                );
+#else
             m_view = new RenderTexture(
                 dim.x, 
                 dim.y, 
@@ -181,7 +211,7 @@ namespace DepthMotion
                 m_downscaledDim.x, 
                 m_downscaledDim.y, 
                 0,
-                RenderTextureFormat.RG16
+                RenderTextureFormat.RGHalf
             );
             
             m_depth = new RenderTexture(
@@ -190,10 +220,19 @@ namespace DepthMotion
                 16,
                 RenderTextureFormat.ARGB32
                 );
+            
+            m_frameBuffer = new RenderTexture(
+                dim.x, 
+                dim.y, 
+                0,
+                RenderTextureFormat.ARGB32
+                );
+#endif
 
             m_view.Create();
             m_motion.Create();
             m_depth.Create();
+            m_frameBuffer.Create();
             
             m_texture2D = new Texture2D(
                 dim.x,
@@ -221,6 +260,10 @@ namespace DepthMotion
         
         void CreateFileTree()
         {
+            if (!DoesFolderExist("Editor"))
+            {
+               CreateFolder("", "Editor"); 
+            }
             if (!DoesFolderExist(c_outputRootDir))
             {
                CreateFolder("Editor", c_outputRootDir); 
@@ -255,7 +298,7 @@ namespace DepthMotion
             SaveTexture(
                 m_motion,  
                 m_downscaledTexture2D, 
-                Path.Combine(m_outputPath, c_viewDir),
+                Path.Combine(m_outputPath, c_motionDir),
                 m_currentFrameIndex.ToString()
             );
         }
@@ -343,23 +386,21 @@ namespace DepthMotion
          * Original scene texture.
          */
         RenderTexture m_view;
-
-        int m_motionId;
-        int m_depthId;
-        int m_viewId;
-        
+        /**
+         * Camera Frame buffer.
+         */
+        RenderTexture m_frameBuffer;
 
         CommandBuffer m_blitViewCommand;
         CommandBuffer m_blitDepthCommand;
         CommandBuffer m_blitMotionCommand;
 
-        int m_currentFrameIndex;
+        // Note: when m_currentFrameIndex starts at 0 the saving routines kicks in
+        // before any rendering has actually been done,
+        // resulting in empty textures. Starting at 1 prevents this.
+        int m_currentFrameIndex = 1;
         Texture2D m_texture2D;
         Texture2D m_downscaledTexture2D;
-
-        const string c_viewTag   = "_Depth";
-        const string c_depthTag  = "_View";
-        const string c_motionTag = "_Motion";
 
         string m_outputPath;
 

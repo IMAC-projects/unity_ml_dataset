@@ -4,30 +4,18 @@
     <e p="C:\Users\binabik\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
     <e p="C:\Users\binabik\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_test_depthmotion_unity.1353487246.00" t="ExcludeRecursive" />
     <e p="C:\Users\binabik\Documents\projets_gite\test\test_depthmotion_unity" t="IncludeRecursive">
-      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="Materials" t="Include">
+          <e p="See.shader" t="Include" />
+        </e>
         <e p="Scripts" t="Include">
           <e p="DepthMotion" t="Include">
             <e p="CameraRenderDepthMotion.cs" t="Include" />
           </e>
           <e p="SimpleCameraController.cs" t="Include" />
-        </e>
-        <e p="TutorialInfo" t="Include">
-          <e p="Scripts" t="Include">
-            <e p="Editor" t="Include">
-              <e p="ReadmeEditor.cs" t="Include" />
-            </e>
-            <e p="Readme.cs" t="Include" />
-          </e>
-        </e>
-      </e>
-      <e p="LocalPackages" t="Include">
-        <e p="com.unity.render-pipelines.high-definition-config" t="Include">
-          <e p="Runtime" t="Include">
-            <e p="ShaderConfig.cs" t="Include" />
-            <e p="ShaderConfig.cs.hlsl" t="Include" />
-            <e p="Unity.RenderPipelines.HighDefinition.Config.Runtime.asmdef" t="Include" />
+          <e p="Util" t="Include">
+            <e p="ReadOnlyAttribute.cs" t="Include" />
           </e>
         </e>
       </e>
@@ -35,7 +23,6 @@
       <e p="Packages" t="ExcludeRecursive" />
       <e p="Temp\bin" t="ExcludeRecursive" />
       <e p="test_depthmotion_unity.sln" t="IncludeFlat" />
-      <e p="Unity.RenderPipelines.HighDefinition.Config.Runtime.csproj" t="IncludeRecursive" />
     </e>
   </component>
 </project>

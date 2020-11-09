@@ -20,10 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d049472-5739-4ba2-bd16-05eb0cc87b52" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Util.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Util/ReadOnlyAttribute.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Util/ReadOnlyAttribute.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/See.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/See.shader" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/DepthMotion/CameraRenderDepthMotion.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DepthMotion/CameraRenderDepthMotion.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,6 +41,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Assets/Materials/See.shader" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Util/ReadOnlyAttribute.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/DepthMotion/CameraRenderDepthMotion.cs" />
       </list>
     </option>
@@ -93,7 +97,8 @@
       <workItem from="1604902535334" duration="1343000" />
       <workItem from="1604922731044" duration="1985000" />
       <workItem from="1604932376487" duration="136000" />
-      <workItem from="1604936631653" duration="2514000" />
+      <workItem from="1604936631653" duration="6681000" />
+      <workItem from="1604946686589" duration="2260000" />
     </task>
     <servers />
   </component>
