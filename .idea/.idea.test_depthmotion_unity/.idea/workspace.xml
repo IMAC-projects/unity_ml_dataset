@@ -20,11 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d049472-5739-4ba2-bd16-05eb0cc87b52" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Util/SnapshotSaver.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Util/SnapshotSaver.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DepthMotion/CameraRenderDepthMotion.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DepthMotion/CameraRenderDepthMotion.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +45,7 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/DontJustStandThere.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Util/SnapshotSaver.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/DepthMotion/CameraRenderDepthMotion.cs" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -103,7 +102,7 @@
       <workItem from="1604932376487" duration="136000" />
       <workItem from="1604936631653" duration="6681000" />
       <workItem from="1604946686589" duration="5683000" />
-      <workItem from="1604991939051" duration="7546000" />
+      <workItem from="1604991939051" duration="9002000" />
     </task>
     <servers />
   </component>

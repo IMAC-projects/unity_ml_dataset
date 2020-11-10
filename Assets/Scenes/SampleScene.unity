@@ -462,4 +462,4 @@ MonoBehaviour:
   thisWay: {x: -1, y: 0, z: 0}
   stepAside: 0.5
   rotateThisWayPlease: {x: 0, y: 0, z: 1}
-  getAlongNow: 360
+  getAlongNow: 90

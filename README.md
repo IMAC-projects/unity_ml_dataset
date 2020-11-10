@@ -2,6 +2,15 @@
 
 ## Extracting Depth and Motion Vectors from Unity at runtime.
 
+### Output
+
+#### View 
+![Original View](./Assets/Resources/Output/view.gif)
+#### Downscaled depth 
+![Downscaled Depth](./Assets/Resources/Output/depth.gif)
+#### Downscaled motion vectors 
+![Downscaled Downscaled Motion Vectors](./Assets/Resources/Output/motion.gif)
+
 ### Research
 
 #### To do
@@ -18,7 +27,14 @@ B) Shader Replacement
 
 C) Command Buffers
 - [x] Render Depth and View with Command Buffers inside Render Textures.
-- [ ] Render Motion Vectors.
+- [x] Render Motion Vectors.
+- [ ] Compare results with some ground truth.
+
+D) Render Piplines considerations
+- [x] Support Legacy Render Pipleline.
+- [ ] Support Universal Render Pipleline.
+- [ ] Support High-Definition Render Pipleline.
+- [ ] Support any other Scriptable Render Pipleline.
 
 #### Constraints
 
