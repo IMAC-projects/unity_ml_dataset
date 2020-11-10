@@ -21,6 +21,7 @@
           </e>
           <e p="Util" t="Include">
             <e p="ReadOnlyAttribute.cs" t="Include" />
+            <e p="SnapshotSaver.cs" t="Include" />
           </e>
         </e>
       </e>

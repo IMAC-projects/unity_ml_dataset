@@ -4,9 +4,8 @@
 using UnityEngine; 
 using UnityEngine.Rendering; 
 using UnityEngine.Assertions; 
-using System.IO;
-using System;
 
+using System.IO;
 
 namespace DepthMotion
 {
@@ -37,7 +36,6 @@ namespace DepthMotion
             PrepareTextures();
             PrepareCameras();
             
-            CreateFileTree();
         }
 
         // OnPostRender only works with the legacy render pipeline
@@ -246,31 +244,9 @@ namespace DepthMotion
             m_depth.Create();
             m_frameBuffer.Create();
             
-            // Important:
-            // Don't change the texture format here,
-            // It looks like it is properly saved only
-            // only when it's TextureFormat.RBG24, even for depth..
-            m_viewTexture2D = new Texture2D(
-                dim.x,
-                dim.y, 
-                TextureFormat.RGB24, 
-                false, 
-                false
-                );
-            m_depthTexture2D = new Texture2D(
-                m_downscaledDim.x, 
-                m_downscaledDim.y,
-                TextureFormat.R16,
-                false,
-                false
-                );
-            m_motionTexture2D = new Texture2D(
-                m_downscaledDim.x, 
-                m_downscaledDim.y,
-                TextureFormat.RGHalf,
-                false,
-                false
-                );
+            m_saver = new Util.SnapshotSaver();
+            m_saver.CreateFileTree();
+            m_saver.CreateTextures(dim, m_downscaledDim);
         }
 
         void AssertSystem()
@@ -290,26 +266,6 @@ namespace DepthMotion
 
         #region Saving routine
         
-        void CreateFileTree()
-        {
-            if (!DoesFolderExist("Editor"))
-            {
-               CreateFolder("", "Editor"); 
-            }
-            if (!DoesFolderExist(c_outputRootDir))
-            {
-               CreateFolder("Editor", c_outputRootDir); 
-            }
-            string timeStamp = DateTime.Now.ToString("yy_MM_dd_hhmmss");
-
-            string outputRootPath = Path.Combine("Editor", c_outputRootDir);
-            m_outputPath = CreateFolder(outputRootPath, timeStamp);
-
-            CreateFolder(m_outputPath, c_viewDir);
-            CreateFolder(m_outputPath, c_depthDir);
-            CreateFolder(m_outputPath, c_motionDir);
-        }
-
         void SaveFrame()
         {
             // Important:
@@ -317,109 +273,25 @@ namespace DepthMotion
             // if we do nothing with them (that is, not save them.)
             // And we need the previous frame to be able to compute the current.
             // As such, will save a couple each time,
-            int samplingIndex = m_currentFrameIndex;
-            if (m_shouldUseQuickFix && (samplingIndex + 1) % samplingStep == 0)
+            int rectifiedFrameIndex = m_currentFrameIndex;
+            if (m_shouldUseQuickFix && (rectifiedFrameIndex + 1) % samplingStep == 0)
             {
                 // Quick fix to force sampling of previous frame
                 // Then we can overwrite it on next frame.
-                samplingIndex += 1;
+                rectifiedFrameIndex += 1;
             }
             else if (m_currentFrameIndex == 1)
             {
                 // Also, the very first frame is always bad (cause it does have a previous frame to be computed from),
                 // so we always use the fix on it.
                 // It will be overwritten by the next frame to be sampled.
-                samplingIndex += samplingStep;
+                rectifiedFrameIndex += samplingStep;
             }
-            string fileName = samplingIndex.ToString();
-            SaveTexture(
-                m_view,  
-                m_viewTexture2D, 
-                Path.Combine(m_outputPath, c_viewDir),
-                fileName
-            );
-
-            SaveTexture(
-                m_depth,
-                m_depthTexture2D,
-                Path.Combine(m_outputPath, c_depthDir),
-                fileName
-            );
-            
-            SaveTexture(
-                m_motion,  
-                m_motionTexture2D, 
-                Path.Combine(m_outputPath, c_motionDir),
-                fileName
-            );
-        }
-
-        static void SaveTexture(RenderTexture renderTexture, Texture2D texture2D, string dirPath, string fileName)
-        {
-            const string extension = ".png";
-            var previous = RenderTexture.active;
-            RenderTexture.active = renderTexture;
-            texture2D.ReadPixels(
-                new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
-            texture2D.Apply();
-            RenderTexture.active = previous;
-            CreateFile(texture2D.EncodeToPNG(), dirPath, fileName, extension);
-        }
-        
-
-        #endregion
-
-        #region IO utility
-
-
-        /**
-         * @returns System path of root dir (child of Project/ dir)
-         * @warning Only works in Editor mode.
-         */
-        static string GetProjectRootFolderPath(string rootDir)
-        {
-            return Path.Combine(Path.GetDirectoryName(Application.dataPath), rootDir);
-        }
-
-        /**
-         * Create a folder in Project from root directory.
-         * 
-         * @param parentPath Name of the parent path from Project root.
-         * @param dir Name of the folder to create.
-         *
-         * @returns Path from Project root of newly created directory.
-         */
-        static string CreateFolder(string parentPath, string dir)
-        {
-            Directory.CreateDirectory(Path.Combine(GetProjectRootFolderPath(parentPath), dir));
-            return Path.Combine(parentPath, dir);
-        }
-
-        /**
-         * Checks whether the Project directory exists.
-         * @param dirPath Path of the dir from Project root.
-         */
-        static bool DoesFolderExist(string dirPath)
-        {
-            return Directory.Exists(GetProjectRootFolderPath(dirPath));
-        }
-
-        /**
-         * Create a file and write data to it.
-         * @param filePath Path of file from Project root.
-         * @param data Byte array of data.
-         */
-        static void CreateFile(byte[] data, string dirPath, string fileName, string extension = "")
-        {
-            File.WriteAllBytes(
-                GetProjectRootFolderPath(Path.Combine(dirPath, Path.ChangeExtension(fileName, extension))),
-                data
-                );
-            
+            m_saver.SaveSnapshot(rectifiedFrameIndex, m_view, m_depth, m_motion);
         }
 
         #endregion
-        
+
         #region Private data
         Vector2Int m_downscaledDim;
         GameObject m_downscaledCameraObject;
@@ -447,6 +319,9 @@ namespace DepthMotion
         CommandBuffer m_blitDepthCommand;
         CommandBuffer m_blitMotionCommand;
 
+        Util.SnapshotSaver m_saver;
+        
+
         // Note: when m_currentFrameIndex starts at 0 the saving routines kicks in
         // before any rendering has actually been done,
         // resulting in empty textures. Starting at 1 prevents this.
@@ -458,17 +333,7 @@ namespace DepthMotion
         int m_currentFrameIndex = 1;
         bool m_shouldUseQuickFix;
         
-        Texture2D m_viewTexture2D;
-        Texture2D m_depthTexture2D;
-        Texture2D m_motionTexture2D;
-
-        string m_outputPath;
-
-        const string c_outputRootDir = "OutputData";
-        const string c_viewDir       = "View";
-        const string c_motionDir     = "Motion";
-        const string c_depthDir      = "Depth";
-
+        
         #endregion
     }
 }
