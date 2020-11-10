@@ -13,18 +13,25 @@ namespace DepthMotion
     [RequireComponent(typeof(Camera))]
     public class CameraRenderDepthMotion : MonoBehaviour
     {
+        // todo: this one should be a power of two, create an attribute for it.
         public Vector2Int dim = new Vector2Int(1920, 1080);
         [RangeAttribute(2, 8)]
         public int downscalingFactor = 4;
 
+        // Important:
+        // The motion vectors need the previous frame in order to be computed.
+        // As such, they should be renderer two consecutive frames..
         [RangeAttribute(1, 500)]
-        public int samplingStep = 50;
+        public int samplingStep = 1;
         
         #region MonoBehaviour Events
 
         void Awake()
         {
             AssertSystem();
+
+            // If we save each frame, there won't be an issue.
+            m_shouldUseQuickFix = samplingStep > 1;
             
             PrepareDims();
             PrepareTextures();
@@ -59,7 +66,11 @@ namespace DepthMotion
 
         void RenderDepthMotionStep()
         {
-            if (m_currentFrameIndex % samplingStep == 0)
+            // We save at least a couple of those.
+            // So that they are both computed and the second gives the actual result.
+            // The first motion vector texture is discarded (if it is faulty, with the quick fix).
+            if (m_currentFrameIndex % samplingStep == 0
+                || (m_currentFrameIndex + 1) % samplingStep == 0)
             {
                 RenderDepthMotion();
             }
@@ -97,12 +108,13 @@ namespace DepthMotion
             m_cam = GetComponent<Camera>();
             m_cam.allowDynamicResolution = false;
 
+            // Signal that the camera should render in this Render Texture.
             m_cam.targetTexture = m_frameBuffer;
             // Signal that the camera should compute and store Depth and Motion Vectors both.
             m_cam.depthTextureMode = DepthTextureMode.Depth | DepthTextureMode.MotionVectors;
             
             // Add callback on end of rendering of frame.
-            // Used by Custom Rendering Piplines,
+            // Used by Custom Rendering Pipelines,
             // as a stand-in for OnPostRender.
             // RenderPipelineManager.endCameraRendering += EndCameraRendering;
             
@@ -122,10 +134,8 @@ namespace DepthMotion
             // Add a Clear action on current render target.
             m_blitViewCommand.ClearRenderTarget(true, true, Color.clear);
             m_blitDepthCommand.ClearRenderTarget(true, true, Color.clear);
-            // m_blitMotionCommand.ClearRenderTarget(true, true, Color.clear);
+            m_blitMotionCommand.ClearRenderTarget(true, true, Color.clear);
 
-            // TODO: Figure out which BuiltinRenderTextureType and CameraEvent to get framebuffer
-            // Now, having the frame debugger helps a lot.
             // Add a Blit action.
             m_blitViewCommand.Blit(
                 BuiltinRenderTextureType.CameraTarget, 
@@ -140,9 +150,6 @@ namespace DepthMotion
                 m_motion
                 );
             
-            // TODO: figure out at which CameraEvent we should get the motion vectors.
-            // They seem to be available as soon as CameraEvent.BeforeForwardAlpha,
-            // But they don't show anything..
             m_cam.AddCommandBuffer(
                 CameraEvent.AfterEverything,
                 m_blitViewCommand
@@ -176,19 +183,27 @@ namespace DepthMotion
                 RenderTextureFormat.ARGB32
                 );
 
-            m_motion = RenderTexture.GetTemporary(
-                m_downscaledDim.x, 
-                m_downscaledDim.y, 
-                16,
-                RenderTextureFormat.RGHalf
-            );
-
+            // Depth can be stored in a R16 format.
+            // This results in a grey-scale image, as expected.
+            // For now, I only use the Colour Buffer, 'cause I have trouble
+            // storing it only in the Depth Buffer (which would make more sense.)
             m_depth = RenderTexture.GetTemporary(
                 m_downscaledDim.x, 
                 m_downscaledDim.y, 
-                16,
-                RenderTextureFormat.ARGB32
+                0,
+                RenderTextureFormat.R16
             );
+            
+            // Motion vectors should be stored in a RGHalf format.
+            // see:
+            // https://docs.unity3d.com/ScriptReference/DepthTextureMode.MotionVectors.html
+            m_motion = RenderTexture.GetTemporary(
+                m_downscaledDim.x, 
+                m_downscaledDim.y, 
+                0,
+                RenderTextureFormat.RGHalf
+            );
+
 
             m_frameBuffer = RenderTexture.GetTemporary(
                 dim.x, 
@@ -204,19 +219,19 @@ namespace DepthMotion
                 RenderTextureFormat.ARGB32
                 );
 
+            m_depth = new RenderTexture(
+                m_downscaledDim.x, 
+                m_downscaledDim.y, 
+                0,
+                RenderTextureFormat.R16
+                );
+
             m_motion = new RenderTexture(
                 m_downscaledDim.x, 
                 m_downscaledDim.y, 
                 0,
                 RenderTextureFormat.RGHalf
             );
-            
-            m_depth = new RenderTexture(
-                m_downscaledDim.x, 
-                m_downscaledDim.y, 
-                16,
-                RenderTextureFormat.ARGB32
-                );
             
             m_frameBuffer = new RenderTexture(
                 dim.x, 
@@ -231,17 +246,28 @@ namespace DepthMotion
             m_depth.Create();
             m_frameBuffer.Create();
             
-            m_texture2D = new Texture2D(
+            // Important:
+            // Don't change the texture format here,
+            // It looks like it is properly saved only
+            // only when it's TextureFormat.RBG24, even for depth..
+            m_viewTexture2D = new Texture2D(
                 dim.x,
                 dim.y, 
                 TextureFormat.RGB24, 
                 false, 
                 false
                 );
-            m_downscaledTexture2D = new Texture2D(
+            m_depthTexture2D = new Texture2D(
                 m_downscaledDim.x, 
                 m_downscaledDim.y,
-                TextureFormat.RGB24,
+                TextureFormat.R16,
+                false,
+                false
+                );
+            m_motionTexture2D = new Texture2D(
+                m_downscaledDim.x, 
+                m_downscaledDim.y,
+                TextureFormat.RGHalf,
                 false,
                 false
                 );
@@ -249,7 +275,16 @@ namespace DepthMotion
 
         void AssertSystem()
         {
+            // Checks for support of dim for Render Textures
+            Assert.IsTrue(dim.x < SystemInfo.maxTextureSize && dim.y < SystemInfo.maxTextureSize);
+            
+            // Checks for support of Motion Vectors
             Assert.IsTrue(SystemInfo.supportsMotionVectors);
+            Assert.IsTrue(SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.RGHalf));
+            Assert.IsTrue(SystemInfo.SupportsTextureFormat(TextureFormat.RGHalf));
+            
+            // Checks for support of Render Texture used for Depth.
+            Assert.IsTrue(SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.R16));
         }
         #endregion
 
@@ -277,34 +312,55 @@ namespace DepthMotion
 
         void SaveFrame()
         {
+            // Important:
+            // The engine seems to not render the Motion Vectors at all
+            // if we do nothing with them (that is, not save them.)
+            // And we need the previous frame to be able to compute the current.
+            // As such, will save a couple each time,
+            int samplingIndex = m_currentFrameIndex;
+            if (m_shouldUseQuickFix && (samplingIndex + 1) % samplingStep == 0)
+            {
+                // Quick fix to force sampling of previous frame
+                // Then we can overwrite it on next frame.
+                samplingIndex += 1;
+            }
+            else if (m_currentFrameIndex == 1)
+            {
+                // Also, the very first frame is always bad (cause it does have a previous frame to be computed from),
+                // so we always use the fix on it.
+                // It will be overwritten by the next frame to be sampled.
+                samplingIndex += samplingStep;
+            }
+            string fileName = samplingIndex.ToString();
             SaveTexture(
                 m_view,  
-                m_texture2D, 
+                m_viewTexture2D, 
                 Path.Combine(m_outputPath, c_viewDir),
-                m_currentFrameIndex.ToString()
+                fileName
             );
 
             SaveTexture(
                 m_depth,
-                m_downscaledTexture2D,
+                m_depthTexture2D,
                 Path.Combine(m_outputPath, c_depthDir),
-                m_currentFrameIndex.ToString()
+                fileName
             );
             
             SaveTexture(
                 m_motion,  
-                m_downscaledTexture2D, 
+                m_motionTexture2D, 
                 Path.Combine(m_outputPath, c_motionDir),
-                m_currentFrameIndex.ToString()
+                fileName
             );
         }
 
         static void SaveTexture(RenderTexture renderTexture, Texture2D texture2D, string dirPath, string fileName)
         {
             const string extension = ".png";
-            RenderTexture previous = RenderTexture.active;
+            var previous = RenderTexture.active;
             RenderTexture.active = renderTexture;
-            texture2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
+            texture2D.ReadPixels(
+                new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
             texture2D.Apply();
             RenderTexture.active = previous;
             CreateFile(texture2D.EncodeToPNG(), dirPath, fileName, extension);
@@ -394,9 +450,17 @@ namespace DepthMotion
         // Note: when m_currentFrameIndex starts at 0 the saving routines kicks in
         // before any rendering has actually been done,
         // resulting in empty textures. Starting at 1 prevents this.
+        // Now, for the Motion Vectors we need one previously rendered image,
+        // Because they are computed as the pixel-wise difference between two frames.
+        // In conclusion, we should start at 2.
+        // However, that does not work, since that results in the Motion Vectors not being
+        // computed, for some reason? So we'll discard the first frame in a couple, and take only the second.
         int m_currentFrameIndex = 1;
-        Texture2D m_texture2D;
-        Texture2D m_downscaledTexture2D;
+        bool m_shouldUseQuickFix;
+        
+        Texture2D m_viewTexture2D;
+        Texture2D m_depthTexture2D;
+        Texture2D m_motionTexture2D;
 
         string m_outputPath;
 
