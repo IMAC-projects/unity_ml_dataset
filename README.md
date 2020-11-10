@@ -24,6 +24,7 @@ A) IO and plug-in considerations
 B) Shader Replacement
 
 - [ ] Look for documentation on RenderType (seems to be only a keyword in some JSON data), find out under which category do UI elements generally fall.
+- [ ] Render 3D Motion Vectors with a specific Material, with the previous vertex positions given as Property blocks!
 
 
 C) Command Buffers
