@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Unity.Collections;
 
 using System;
 using System.IO;
@@ -110,8 +111,34 @@ namespace Util
             RenderTexture.active = previous;
             CreateFile(texture2D.EncodeToPNG(), dirPath, fileName, extension);
         }
-        
-        
+
+        // todo: Find a way to preserve negative values in Motion Vector texture.
+        static void SaveTextureMotion(RenderTexture renderTexture, Texture2D texture2D, string dirPath, string fileName)
+        {
+            const string extension = ".png";
+            var previous = RenderTexture.active;
+            RenderTexture.active = renderTexture;
+            texture2D.ReadPixels(
+                new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
+            texture2D.Apply();
+            RenderTexture.active = previous;
+            CreateFile(RemapMotionImageInPlace(texture2D.EncodeToPNG()), dirPath, fileName, extension);
+        }
+
+        /**
+         * From representation of [-1, 1] to [0, 2]??
+         */
+        static byte[] RemapMotionImageInPlace(byte[] exrData)
+        {
+            const byte added = 127;
+            for (int i = 0; i < exrData.Length; ++i)
+            {
+                exrData[i] += added;
+            }
+
+            return exrData;
+        }
+
         #endregion
         
         #region IO utility

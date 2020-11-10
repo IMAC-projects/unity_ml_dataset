@@ -21,7 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4d049472-5739-4ba2-bd16-05eb0cc87b52" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Util/SnapshotSaver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Util/SnapshotSaver.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,6 +33,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9FB01C8F-E0B3-4B83-A5E8-910B2372620D/46/43dd4cb3/ImageConversion.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E98ED036-8295-432E-8C11-E52D6243EE11/ff/79915b93/Vector2Int.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
@@ -43,9 +44,9 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/SimpleCameraController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/UnityTemplateProjects/SimpleCameraController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/DontJustStandThere.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Util/SnapshotSaver.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/DepthMotion/CameraRenderDepthMotion.cs" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Util/SnapshotSaver.cs" />
       </list>
     </option>
   </component>
@@ -102,7 +103,8 @@
       <workItem from="1604932376487" duration="136000" />
       <workItem from="1604936631653" duration="6681000" />
       <workItem from="1604946686589" duration="5683000" />
-      <workItem from="1604991939051" duration="9002000" />
+      <workItem from="1604991939051" duration="9523000" />
+      <workItem from="1605004183171" duration="3509000" />
     </task>
     <servers />
   </component>

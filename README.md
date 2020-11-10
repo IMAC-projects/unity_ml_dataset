@@ -4,12 +4,12 @@
 
 ### Output
 
-#### View 
+#### View
 ![Original View](./Assets/Resources/Output/view.gif)
-#### Downscaled depth 
+#### Downscaled depth
 ![Downscaled Depth](./Assets/Resources/Output/depth.gif)
-#### Downscaled motion vectors 
-![Downscaled Downscaled Motion Vectors](./Assets/Resources/Output/motion.gif)
+#### Downscaled motion vectors
+![Downscaled 2D Motion Vectors](./Assets/Resources/Output/motion.gif)
 
 ### Research
 
@@ -19,6 +19,7 @@ A) IO and plug-in considerations
 
 - [x] Look for alternatives to Replaced Shaders with our constraints.
 - [x] Automatically save each type of RenderTextures inside folders.
+- [ ] Remap Motion Vectors values to be all positive before exporting.
 
 B) Shader Replacement
 
@@ -27,7 +28,8 @@ B) Shader Replacement
 
 C) Command Buffers
 - [x] Render Depth and View with Command Buffers inside Render Textures.
-- [x] Render Motion Vectors.
+- [x] Render *2D* per-pixel Motion Vectors in View Space.
+- [ ] Render *3D* per-pixel Motion Vectors in View Space.
 - [ ] Compare results with some ground truth.
 
 D) Render Piplines considerations
