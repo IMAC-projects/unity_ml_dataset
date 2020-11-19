@@ -5,21 +5,16 @@ using UnityEngine;
 using UnityEngine.Rendering; 
 using UnityEngine.Assertions; 
 
-using System.IO;
-
 namespace DepthMotion
 {
     [RequireComponent(typeof(Camera))]
     public class CameraRenderDepthMotion : MonoBehaviour
     {
-        // todo: this one should be a power of two, create an attribute for it.
         public Vector2Int dim = new Vector2Int(1920, 1080);
+        // todo: this one should be a power of two, create an attribute for it.
         [RangeAttribute(2, 8)]
         public int downscalingFactor = 4;
 
-        // Important:
-        // The motion vectors need the previous frame in order to be computed.
-        // As such, they should be renderer two consecutive frames..
         [RangeAttribute(1, 500)]
         public int samplingStep = 1;
         
@@ -29,7 +24,12 @@ namespace DepthMotion
         {
             AssertSystem();
 
+            // Important:
+            // The motion vectors need the previous frame in order to be computed.
+            // As such, they should be renderer two consecutive frames..
             // If we save each frame, there won't be an issue.
+            // But that's not what we're doing here.
+            // It's big brain time, baby.
             m_shouldUseQuickFix = samplingStep > 1;
             
             PrepareDims();
