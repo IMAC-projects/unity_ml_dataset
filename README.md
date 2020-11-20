@@ -30,6 +30,11 @@ C) Render Piplines considerations
 - [ ] Support High-Definition Render Pipleline.
 - [ ] Support any other Scriptable Render Pipleline.
 
+#### Known issues
+
+- Using a low sampling step causes the rendering to skip frames, so that one cannot actually use this to capture consecutive frames.
+- Does not support Scritables Render Piplelines (including URP and HDRP).
+
 #### Constraints
 
 
