@@ -224,8 +224,8 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
-  - component: {fileID: 963194229}
   - component: {fileID: 963194230}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -307,12 +307,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5d835a35e104bd496ed0f150f39fb7e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b7e9fcb795b84664bfc1ac40799a68f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dim: {x: 1920, y: 1080}
+  dim: {x: 500, y: 600}
   downscalingFactor: 4
   samplingStep: 1
+  targets: 000000000300000005000000
+  uberReplacementShader: {fileID: 4800000, guid: 171e6e515a12e4a298dce708924e98ba,
+    type: 3}
+  opticalFlowShader: {fileID: 4800000, guid: 2a970eca3c9e84f13b5b616e530a7919, type: 3}
+  opticalFlowSensitivity: 5.37
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,7 +464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b41340312e17c0c489df3a7ebb2a9b63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisWay: {x: -1, y: 0, z: 0}
+  thisWay: {x: -1, y: 0, z: 0.2}
   stepAside: 0.5
-  rotateThisWayPlease: {x: 0, y: 0, z: 1}
+  rotateThisWayPlease: {x: 0, y: 1, z: 1}
   getAlongNow: 90

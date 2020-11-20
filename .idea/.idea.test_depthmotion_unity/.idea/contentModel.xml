@@ -16,26 +16,18 @@
               <e p="SimpleCameraController.cs" t="Include" />
             </e>
           </e>
-          <e p="DepthMotion" t="Include">
-            <e p="CameraRenderDepthMotion.cs" t="Include" />
+          <e p="ImageSynthesis" t="Include">
+            <e p="ColorEncoding.cs" t="Include" />
+            <e p="FrameCapturer.cs" t="Include" />
           </e>
           <e p="Util" t="Include">
             <e p="ReadOnlyAttribute.cs" t="Include" />
             <e p="SnapshotSaver.cs" t="Include" />
           </e>
         </e>
-        <e p="ThirdParties" t="Include">
-          <e p="com.unity.mltoolkit" t="Include">
-            <e p="ImageSynthesis" t="Include">
-              <e p="ColorEncoding.cs" t="Include" />
-              <e p="ExampleUI.cs" t="Include" />
-              <e p="ImageSynthesis.cs" t="Include" />
-              <e p="Shaders" t="Include">
-                <e p="OpticalFlow.shader" t="Include" />
-                <e p="UberReplacement.shader" t="Include" />
-              </e>
-            </e>
-          </e>
+        <e p="Shaders" t="Include">
+          <e p="OpticalFlow.shader" t="Include" />
+          <e p="UberReplacement.shader" t="Include" />
         </e>
       </e>
       <e p="obj" t="ExcludeRecursive" />

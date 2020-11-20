@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-using Unity.Collections;
 
 using System;
 using System.IO;
+
+using ImageSynthesis;
 
 namespace Util
 {
@@ -18,6 +19,8 @@ namespace Util
         const string c_motionDir     = "Motion";
         const string c_depthDir      = "Depth";
 
+        const string c_extension = ".png";
+        
         #endregion
         
         #region File Tree creation 
@@ -46,97 +49,20 @@ namespace Util
         
         #region Saving routine
 
-        public void CreateTextures(Vector2Int dim, Vector2Int downscaledDim)
+        public void Save(int frameIndex, FrameCapturer.PassKind kind, byte[] data, int length)
         {
-            // Important:
-            // Don't change the texture format here,
-            // It looks like it is properly saved only
-            // only when it's TextureFormat.RBG24, even for depth..
-            m_viewTexture2D = new Texture2D(
-                dim.x,
-                dim.y, 
-                TextureFormat.RGB24, 
-                false, 
-                false
-                );
-            m_depthTexture2D = new Texture2D(
-                downscaledDim.x, 
-                downscaledDim.y,
-                TextureFormat.R16,
-                false,
-                false
-                );
-            m_motionTexture2D = new Texture2D(
-                downscaledDim.x, 
-                downscaledDim.y,
-                TextureFormat.RGHalf,
-                false,
-                false
-                );
-        }
-        
-        public void SaveSnapshot(int frameIndex, RenderTexture view, RenderTexture depth, RenderTexture motion)
-        {
-            string fileName = frameIndex.ToString();
-            SaveTexture(
-                view,  
-                m_viewTexture2D, 
-                Path.Combine(m_outputPath, c_viewDir),
-                fileName
-            );
-
-            SaveTexture(
-                depth,
-                m_depthTexture2D,
-                Path.Combine(m_outputPath, c_depthDir),
-                fileName
-            );
-            
-            SaveTexture(
-                motion,  
-                m_motionTexture2D, 
-                Path.Combine(m_outputPath, c_motionDir),
-                fileName
-            );
+            CreateFile(data, length, GetPassKindDirectory(kind), frameIndex.ToString(), c_extension);
         }
 
-        static void SaveTexture(RenderTexture renderTexture, Texture2D texture2D, string dirPath, string fileName)
+        string GetPassKindDirectory(FrameCapturer.PassKind kind)
         {
-            const string extension = ".png";
-            var previous = RenderTexture.active;
-            RenderTexture.active = renderTexture;
-            texture2D.ReadPixels(
-                new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
-            texture2D.Apply();
-            RenderTexture.active = previous;
-            CreateFile(texture2D.EncodeToPNG(), dirPath, fileName, extension);
-        }
-
-        // todo: Find a way to preserve negative values in Motion Vector texture.
-        static void SaveTextureMotion(RenderTexture renderTexture, Texture2D texture2D, string dirPath, string fileName)
-        {
-            const string extension = ".png";
-            var previous = RenderTexture.active;
-            RenderTexture.active = renderTexture;
-            texture2D.ReadPixels(
-                new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
-            texture2D.Apply();
-            RenderTexture.active = previous;
-            CreateFile(RemapMotionImageInPlace(texture2D.EncodeToPNG()), dirPath, fileName, extension);
-        }
-
-        /**
-         * From representation of [-1, 1] to [0, 2]??
-         */
-        static byte[] RemapMotionImageInPlace(byte[] exrData)
-        {
-            const byte added = 127;
-            for (int i = 0; i < exrData.Length; ++i)
+            switch (kind)
             {
-                exrData[i] += added;
+            case FrameCapturer.PassKind.EImage: return Path.Combine(m_outputPath, c_viewDir);
+            case FrameCapturer.PassKind.EDepth: return Path.Combine(m_outputPath, c_depthDir);
+            case FrameCapturer.PassKind.EFlow: return Path.Combine(m_outputPath, c_motionDir);
+            default: throw new ArgumentException("Nope.");
             }
-
-            return exrData;
         }
 
         #endregion
@@ -181,24 +107,17 @@ namespace Util
          * @param filePath Path of file from Project root.
          * @param data Byte array of data.
          */
-        static void CreateFile(byte[] data, string dirPath, string fileName, string extension = "")
+        static void CreateFile(byte[] data, int length, string dirPath, string fileName, string extension = "")
         {
+            byte[] subData = new byte[length];
+            Array.Copy(data, subData, length);
             File.WriteAllBytes(
                 GetProjectRootFolderPath(Path.Combine(dirPath, Path.ChangeExtension(fileName, extension))),
-                data
+                subData
                 );
             
         }
 
-        #endregion
-        
-        #region Private data
-        
-        // Texture2D's are used to save the RenderTextures to files.
-        Texture2D m_viewTexture2D;
-        Texture2D m_depthTexture2D;
-        Texture2D m_motionTexture2D;
-        
         #endregion
     }
 }
