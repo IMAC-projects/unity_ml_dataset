@@ -19,21 +19,12 @@ A) IO and plug-in considerations
 
 - [x] Look for alternatives to Replaced Shaders with our constraints.
 - [x] Automatically save each type of RenderTextures inside folders.
-- [ ] Remap Motion Vectors values to be all positive before exporting.
 
 B) Shader Replacement
 
-- [ ] Look for documentation on RenderType (seems to be only a keyword in some JSON data), find out under which category do UI elements generally fall.
-- [ ] Render 3D Motion Vectors with a specific Material, with the previous vertex positions given as Property blocks!
+- [x] Use Unity ML toolkit.
 
-
-C) Command Buffers
-- [x] Render Depth and View with Command Buffers inside Render Textures.
-- [x] Render *2D* per-pixel Motion Vectors in View Space.
-- [ ] Render *3D* per-pixel Motion Vectors in View Space.
-- [ ] Compare results with some ground truth.
-
-D) Render Piplines considerations
+C) Render Piplines considerations
 - [x] Support Legacy Render Pipleline.
 - [ ] Support Universal Render Pipleline.
 - [ ] Support High-Definition Render Pipleline.

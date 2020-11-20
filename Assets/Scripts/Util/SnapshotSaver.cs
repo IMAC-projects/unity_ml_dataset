@@ -49,9 +49,9 @@ namespace Util
         
         #region Saving routine
 
-        public void Save(int frameIndex, FrameCapturer.PassKind kind, byte[] data, int length)
+        public void Save(int frameIndex, FrameCapturer.PassKind kind, byte[] data)
         {
-            CreateFile(data, length, GetPassKindDirectory(kind), frameIndex.ToString(), c_extension);
+            CreateFile(data, GetPassKindDirectory(kind), frameIndex.ToString(), c_extension);
         }
 
         string GetPassKindDirectory(FrameCapturer.PassKind kind)
@@ -107,13 +107,11 @@ namespace Util
          * @param filePath Path of file from Project root.
          * @param data Byte array of data.
          */
-        static void CreateFile(byte[] data, int length, string dirPath, string fileName, string extension = "")
+        static void CreateFile(byte[] data, string dirPath, string fileName, string extension = "")
         {
-            byte[] subData = new byte[length];
-            Array.Copy(data, subData, length);
             File.WriteAllBytes(
                 GetProjectRootFolderPath(Path.Combine(dirPath, Path.ChangeExtension(fileName, extension))),
-                subData
+                data
                 );
             
         }

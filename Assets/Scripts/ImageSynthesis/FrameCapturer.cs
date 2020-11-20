@@ -44,22 +44,65 @@ namespace ImageSynthesis
 
 		#region Public structs 
 
-		struct CapturePass
+		class CapturePass
 		{
 			// configuration
 			public PassKind kind;
 			public string name;
-			public bool supportsAntialiasing;
+			
 			public bool needsRescale;
+			public bool supportsAntiAliasing;
 
-			public CapturePass(PassKind kind_, string name_)
+			public byte[] buffer;
+			public int dataLength;
+
+			public RenderTexture renderTexture;
+			public Texture2D texture;
+
+			public CapturePass(PassKind kind_, string name_, bool supportsAntiAliasing_)
 			{
 				kind = kind_;
 				name = name_;
-				supportsAntialiasing = true;
+				
+				buffer = new byte[0];
+				dataLength = buffer.Length;
+				
 				needsRescale = false;
+				supportsAntiAliasing = supportsAntiAliasing_;
+				
 				camera = null;
+
+				renderTexture = null;
+				texture = null;
 			}
+
+			~CapturePass()
+			{
+				if (renderTexture != null)
+				{
+					RenderTexture.ReleaseTemporary(renderTexture);
+				}
+			}
+
+			public void CreateTextures(int width, int height, bool needsRescale_)
+			{ 
+				renderTexture = RenderTexture.GetTemporary(
+					width, 
+					height, 
+					c_depthSize, 
+					RenderTextureFormat.Default, 
+					RenderTextureReadWrite.Default
+	            );
+				
+				texture = new Texture2D(width, height, TextureFormat.RGB24, false);
+
+				needsRescale = needsRescale_;
+				
+				var antiAliasing = (supportsAntiAliasing) ? Mathf.Max(1, QualitySettings.antiAliasing) : 1;
+
+				renderTexture.antiAliasing = antiAliasing;
+			}
+			
 			// impl
 			public Camera camera;
 		};
@@ -83,13 +126,29 @@ namespace ImageSynthesis
 			// Set the non-downscaled screen resolution as requested.
 			Screen.SetResolution(dim.x, dim.y, Screen.fullScreenMode);
 			
+            m_downscaledDim = dim / downscalingFactor;
+			
 			m_capturePasses = new CapturePass[targets.Length];
 			// use real camera to capture final image
 			for (int q = 0; q < m_capturePasses.Length; q++)
 			{
 				m_capturePasses[q] = s_allCapturePasses[targets[q]];
 				m_capturePasses[q].camera = CreateHiddenCamera (m_capturePasses[q].name);
+				bool needsRecale = m_capturePasses[q].kind == PassKind.EFlow;
+				Vector2Int dim_ = m_capturePasses[q].kind == PassKind.EImage
+					? dim
+					: m_downscaledDim;
+				
+				m_capturePasses[q].CreateTextures(dim_.x, dim_.y, needsRecale);
 			}
+			
+            m_fullRenderTexture = RenderTexture.GetTemporary(
+					dim.x, 
+					dim.y, 
+					c_depthSize, 
+					RenderTextureFormat.Default, 
+					RenderTextureReadWrite.Default
+	            );
 			
             m_saver = new Util.SnapshotSaver();
             m_saver.CreateFileTree();
@@ -102,34 +161,13 @@ namespace ImageSynthesis
             
             m_shouldUseQuickFix = samplingStep > 1;
             
-            m_downscaledDim = dim / downscalingFactor;
-            
-            m_outBuffer = new byte[dim.x * dim.y];
-            m_downscaledOutBuffer = new byte[m_downscaledDim.x * m_downscaledDim.y];
-            
-            m_renderTexture = RenderTexture.GetTemporary(
-	            dim.x, 
-	            dim.y, 
-	            c_depthSize, 
-	            RenderTextureFormat.Default, 
-	            RenderTextureReadWrite.Default
-	            );
-            m_downscaledRenderTexture = RenderTexture.GetTemporary(
-	            m_downscaledDim.x,
-	            m_downscaledDim.y,
-	            c_depthSize,
-	            RenderTextureFormat.Default,
-	            RenderTextureReadWrite.Default
-	            );
-            
-            m_texture = new Texture2D(dim.x, dim.y, TextureFormat.RGB24, false);
-            m_downscaledTexture = new Texture2D(m_downscaledDim.x, m_downscaledDim.y, TextureFormat.RGB24, false);
 		}
 
 		void OnDestroy()
 		{
-			RenderTexture.ReleaseTemporary(m_renderTexture);
-			RenderTexture.ReleaseTemporary(m_downscaledRenderTexture);
+			RenderTexture.ReleaseTemporary(m_fullRenderTexture);
+			
+			RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;	
 		}
 
 		void Start()
@@ -148,6 +186,8 @@ namespace ImageSynthesis
 
 			OnCameraChange();
 			OnSceneChange();
+			
+			RenderPipelineManager.endCameraRendering += OnEndCameraRendering;	
 		}
 
 		void LateUpdate()
@@ -171,7 +211,7 @@ namespace ImageSynthesis
         
 
         // Kind of an equivalent for SRP.
-        void EndCameraRendering(ScriptableRenderContext context, Camera cam)
+        void OnEndCameraRendering(ScriptableRenderContext context, Camera cam)
         {
             if (cam == m_cam)
             {
@@ -247,7 +287,7 @@ namespace ImageSynthesis
         }
         
 
-		public void SaveCapturePass(byte[] buffer, PassKind kind, int width, int height, int frameIndex)
+		public void SaveCapturePass(PassKind kind, int frameIndex)
 		{
 			// get capture pass of kind
 			if (!System.Array.Exists(m_capturePasses, pass => pass.kind == kind))
@@ -259,17 +299,26 @@ namespace ImageSynthesis
 
 			// Wait for the end of frame
 			StartCoroutine(
-				WaitForEndOfFrameAndCacheCapturePass(buffer, capturePass, width, height, frameIndex)
+				WaitForEndOfFrameAndCacheCapturePass(capturePass, frameIndex)
 			);
 		}
 
-		IEnumerator WaitForEndOfFrameAndCacheCapturePass(
-			byte[] buffer, CapturePass capturePass, int width, int height, int frameIndex)
+		IEnumerator WaitForEndOfFrameAndCacheCapturePass(CapturePass capturePass, int frameIndex)
 		{
 			yield return new WaitForEndOfFrame();
-			SaveCapturePass(buffer, capturePass, width, height, frameIndex);
+			SaveCapturePass(capturePass, frameIndex);
 		}
 		
+        void SaveFrame(int frameIndex)
+        {
+            
+            // m_saver.SaveSnapshot(rectifiedFrameIndex, m_view, m_depth, m_motion);
+            foreach (var kind in targets)
+            {
+                // get and save the data 
+               SaveCapturePass(kind, frameIndex);
+            }
+        }
 		
         void SaveFrame()
         {
@@ -295,90 +344,24 @@ namespace ImageSynthesis
             SaveFrame(m_rectifiedFrameIndex);
         }
         
-        void SaveFrame(int frameIndex)
-        {
-            
-            // m_saver.SaveSnapshot(rectifiedFrameIndex, m_view, m_depth, m_motion);
-            foreach (var kind in targets)
-            {
-                byte[] buffer;
-                int width, height;
-                // View is in the original scale
-                if (kind == FrameCapturer.PassKind.EImage)
-                {
-                    buffer = m_outBuffer;
-                    width = dim.x;
-                    height = dim.y;
-                }
-                // Everything else is downscaled
-                else
-                {
-                    buffer = m_downscaledOutBuffer;
-                    width = m_downscaledDim.x;
-                    height = m_downscaledDim.y;
-                }
-                // get and save the data 
-               SaveCapturePass(
-                    buffer, 
-                    kind, 
-                    width, 
-                    height, 
-                    frameIndex);
-            }
-        }
 		
-		void SaveCapturePass(byte[] data, CapturePass capturePass, int width, int height, int frameIndex)
+		void SaveCapturePass(CapturePass capturePass, int frameIndex)
 		{
-			int length = ComputePixelData(
-				data,
-				capturePass.camera, 
-				capturePass.kind == PassKind.EImage ? m_renderTexture : m_downscaledRenderTexture,
-				capturePass.kind == PassKind.EImage ? m_texture : m_downscaledTexture,
-				capturePass.supportsAntialiasing,
-				capturePass.needsRescale);
-			m_saver.Save(frameIndex, capturePass.kind, data, length);
+			ComputePixelData(capturePass);
+			m_saver.Save(frameIndex, capturePass.kind, capturePass.buffer);
 
 			++m_numberCaptured;
 		}
 			
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="data">A a byte array of Length width * height</param>
-		/// <param name="cam"></param>
-		/// <param name="finalRenderTexture"></param>
-		/// <param name="texture"></param>
-		/// <param name="supportsAntialiasing"></param>
-		/// <param name="needsRescale"></param>
-		/// <returns></returns>
-		int ComputePixelData(
-			byte[] data, 
-			Camera cam, 
-			RenderTexture finalRenderTexture, 
-			Texture2D texture, 
-			bool supportsAntialiasing, 
-			bool needsRescale)
+		void ComputePixelData(CapturePass capturePass)
 		{
-			var antiAliasing = (supportsAntialiasing) ? Mathf.Max(1, QualitySettings.antiAliasing) : 1;
+			var renderTexture = capturePass.needsRescale
+				? m_fullRenderTexture
+				: capturePass.renderTexture;
 
-			finalRenderTexture.antiAliasing = antiAliasing;
+			var cam = capturePass.camera;
+			var texture = capturePass.texture;
 
-			var renderRT = (!needsRescale)
-				? finalRenderTexture
-				: m_renderTexture;
-
-			return ComputePixelData(data, cam, finalRenderTexture, renderRT, texture, needsRescale);
-		}
-
-		int ComputePixelData(
-			byte[] data, 
-			Camera cam, 
-			RenderTexture finalRenderTexture, 
-			RenderTexture renderTexture, 
-			Texture2D texture, 
-			bool needsRescale
-			)
-		{
 			
 			var prevActiveRT = RenderTexture.active;
 			var prevCameraRT = cam.targetTexture;
@@ -389,28 +372,24 @@ namespace ImageSynthesis
 
 			cam.Render();
 
-			if (needsRescale)
+			if (capturePass.needsRescale)
 			{
 				// blit to rescale (see issue with Motion Vectors in @KNOWN ISSUES)
-				RenderTexture.active = finalRenderTexture;
-				Graphics.Blit(renderTexture, finalRenderTexture);
+				RenderTexture.active = capturePass.renderTexture;
+				Graphics.Blit(renderTexture, capturePass.renderTexture);
 			}
 
-			// read offsreen texture contents into the CPU readable texture
+			// read offscreen texture contents into the CPU readable texture
+			
 			texture.ReadPixels(new Rect(0, 0, texture.width, texture.height), 0, 0);
 			texture.Apply();
 
 			// encode texture into PNG
-			var bytes = texture.EncodeToPNG();
-			// copy content into already allocated destination
-			System.Array.Copy(bytes, data, bytes.Length);
-			
+			capturePass.buffer = texture.EncodeToPNG();
 
 			// restore state and cleanup
 			cam.targetTexture = prevCameraRT;
 			RenderTexture.active = prevActiveRT;
-			
-			return bytes.Length;
 		}
 
 		#endregion
@@ -515,13 +494,13 @@ namespace ImageSynthesis
 		// pass configuration (factory, kind of)
 		static readonly Dictionary<PassKind, CapturePass> s_allCapturePasses = new Dictionary<PassKind, CapturePass>
 		{
-			{ PassKind.EImage, new CapturePass() { kind = PassKind.EImage, name = "_img" } },
-			{ PassKind.EId, new CapturePass() { kind = PassKind.EId, name = "_id", supportsAntialiasing = false } },
-			{ PassKind.ELayer, new CapturePass() { kind = PassKind.ELayer, name = "_layer", supportsAntialiasing = false } },
-			{ PassKind.EDepth, new CapturePass() { kind = PassKind.EDepth, name = "_depth" } },
-			{ PassKind.ENormals, new CapturePass() { kind = PassKind.ENormals, name = "_normals" } },
-			// (see issue with Motion Vectors in @KNOWN ISSUES)
-			{ PassKind.EFlow, new CapturePass() { kind = PassKind.EFlow, name = "_flow", supportsAntialiasing = false, needsRescale = true } } 
+			{ PassKind.EImage, new CapturePass(PassKind.EImage, "_img", true) },
+			{ PassKind.EId, new CapturePass(PassKind.EId, "_id", false) },
+			{ PassKind.ELayer, new CapturePass(PassKind.ELayer, "_layer", false) },
+			{ PassKind.EDepth, new CapturePass(PassKind.EDepth, "_depth", true) },
+			{ PassKind.ENormals, new CapturePass(PassKind.ENormals, "_normals", false) },
+			// (see issue with Motion Vectors in @KNOWN ISSUES), they need rescaling (doing that anyway.)
+			{ PassKind.EFlow, new CapturePass(PassKind.EFlow, "_flow", false) } 
 		};
 		#endregion
 
@@ -533,12 +512,8 @@ namespace ImageSynthesis
 		Camera m_cam;
 		CapturePass[] m_capturePasses;
 
-		RenderTexture m_renderTexture;
-		RenderTexture m_downscaledRenderTexture;
+		RenderTexture m_fullRenderTexture;
 
-		Texture2D m_texture;
-		Texture2D m_downscaledTexture;
-		
         Vector2Int m_downscaledDim;
 
         byte[] m_outBuffer;
