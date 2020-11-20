@@ -310,7 +310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b7e9fcb795b84664bfc1ac40799a68f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dim: {x: 500, y: 600}
+  dim: {x: 1920, y: 1080}
   downscalingFactor: 4
   samplingStep: 1
   targets: 000000000300000005000000

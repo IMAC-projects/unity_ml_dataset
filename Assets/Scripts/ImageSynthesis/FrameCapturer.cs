@@ -106,17 +106,45 @@ namespace ImageSynthesis
             
             m_outBuffer = new byte[dim.x * dim.y];
             m_downscaledOutBuffer = new byte[m_downscaledDim.x * m_downscaledDim.y];
+            
+            m_renderTexture = RenderTexture.GetTemporary(
+	            dim.x, 
+	            dim.y, 
+	            c_depthSize, 
+	            RenderTextureFormat.Default, 
+	            RenderTextureReadWrite.Default
+	            );
+            m_downscaledRenderTexture = RenderTexture.GetTemporary(
+	            m_downscaledDim.x,
+	            m_downscaledDim.y,
+	            c_depthSize,
+	            RenderTextureFormat.Default,
+	            RenderTextureReadWrite.Default
+	            );
+            
+            m_texture = new Texture2D(dim.x, dim.y, TextureFormat.RGB24, false);
+            m_downscaledTexture = new Texture2D(m_downscaledDim.x, m_downscaledDim.y, TextureFormat.RGB24, false);
+		}
+
+		void OnDestroy()
+		{
+			RenderTexture.ReleaseTemporary(m_renderTexture);
+			RenderTexture.ReleaseTemporary(m_downscaledRenderTexture);
 		}
 
 		void Start()
 		{
 			// default fallbacks, if shaders are unspecified
 			if (!uberReplacementShader)
+			{
 				uberReplacementShader = Shader.Find("Hidden/UberReplacement");
+			}
 
 			if (!opticalFlowShader)
+			{
 				opticalFlowShader = Shader.Find("Hidden/OpticalFlow");
-
+				
+			}
 
 			OnCameraChange();
 			OnSceneChange();
@@ -126,7 +154,9 @@ namespace ImageSynthesis
 		{
 			#if UNITY_EDITOR
 			if (DetectPotentialSceneChangeInEditor())
+			{
 				OnSceneChange();
+			}
 			#endif // UNITY_EDITOR
 
 			// @TODO: detect if camera properties actually changed
@@ -153,7 +183,7 @@ namespace ImageSynthesis
 		void OnCameraChange()
 		{
 			int targetDisplay = 1;
-			var mainCamera = GetComponent<Camera>();
+			var mainCamera = m_cam;
 			foreach (var pass in m_capturePasses)
 			{
 				if (pass.camera == mainCamera)
@@ -186,7 +216,7 @@ namespace ImageSynthesis
 
 		void OnSceneChange()
 		{
-			var renderers = Object.FindObjectsOfType<Renderer>();
+			var renderers = FindObjectsOfType<Renderer>();
 			var mpb = new MaterialPropertyBlock();
 			foreach (var r in renderers)
 			{
@@ -302,59 +332,76 @@ namespace ImageSynthesis
 			int length = ComputePixelData(
 				data,
 				capturePass.camera, 
-				width, height, 
+				capturePass.kind == PassKind.EImage ? m_renderTexture : m_downscaledRenderTexture,
+				capturePass.kind == PassKind.EImage ? m_texture : m_downscaledTexture,
 				capturePass.supportsAntialiasing,
 				capturePass.needsRescale);
 			m_saver.Save(frameIndex, capturePass.kind, data, length);
 
 			++m_numberCaptured;
 		}
+			
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="data">A a byte array of Length width * height</param>
 		/// <param name="cam"></param>
-		/// <param name="width"></param>
-		/// <param name="height"></param>
+		/// <param name="finalRenderTexture"></param>
+		/// <param name="texture"></param>
 		/// <param name="supportsAntialiasing"></param>
 		/// <param name="needsRescale"></param>
-		/// <returns>size of copied data encoded in PNG format.</returns>
-		int ComputePixelData(byte[] data, Camera cam, int width, int height, bool supportsAntialiasing, bool needsRescale)
+		/// <returns></returns>
+		int ComputePixelData(
+			byte[] data, 
+			Camera cam, 
+			RenderTexture finalRenderTexture, 
+			Texture2D texture, 
+			bool supportsAntialiasing, 
+			bool needsRescale)
 		{
-			var depth = 24;
-			var format = RenderTextureFormat.Default;
-			var readWrite = RenderTextureReadWrite.Default;
 			var antiAliasing = (supportsAntialiasing) ? Mathf.Max(1, QualitySettings.antiAliasing) : 1;
 
-			var finalRT =
-				RenderTexture.GetTemporary(width, height, depth, format, readWrite, antiAliasing);
-			var renderRT = (!needsRescale) ? finalRT :
-				RenderTexture.GetTemporary(m_cam.pixelWidth, m_cam.pixelHeight, depth, format, readWrite, antiAliasing);
-			var tex = new Texture2D(width, height, TextureFormat.RGB24, false);
+			finalRenderTexture.antiAliasing = antiAliasing;
 
+			var renderRT = (!needsRescale)
+				? finalRenderTexture
+				: m_renderTexture;
+
+			return ComputePixelData(data, cam, finalRenderTexture, renderRT, texture, needsRescale);
+		}
+
+		int ComputePixelData(
+			byte[] data, 
+			Camera cam, 
+			RenderTexture finalRenderTexture, 
+			RenderTexture renderTexture, 
+			Texture2D texture, 
+			bool needsRescale
+			)
+		{
+			
 			var prevActiveRT = RenderTexture.active;
 			var prevCameraRT = cam.targetTexture;
 
 			// render to offscreen texture (readonly from CPU side)
-			RenderTexture.active = renderRT;
-			cam.targetTexture = renderRT;
+			RenderTexture.active = renderTexture;
+			cam.targetTexture = renderTexture;
 
 			cam.Render();
 
 			if (needsRescale)
 			{
 				// blit to rescale (see issue with Motion Vectors in @KNOWN ISSUES)
-				RenderTexture.active = finalRT;
-				Graphics.Blit(renderRT, finalRT);
-				RenderTexture.ReleaseTemporary(renderRT);
+				RenderTexture.active = finalRenderTexture;
+				Graphics.Blit(renderTexture, finalRenderTexture);
 			}
 
 			// read offsreen texture contents into the CPU readable texture
-			tex.ReadPixels(new Rect(0, 0, tex.width, tex.height), 0, 0);
-			tex.Apply();
+			texture.ReadPixels(new Rect(0, 0, texture.width, texture.height), 0, 0);
+			texture.Apply();
 
 			// encode texture into PNG
-			var bytes = tex.EncodeToPNG();
+			var bytes = texture.EncodeToPNG();
 			// copy content into already allocated destination
 			System.Array.Copy(bytes, data, bytes.Length);
 			
@@ -362,9 +409,6 @@ namespace ImageSynthesis
 			// restore state and cleanup
 			cam.targetTexture = prevCameraRT;
 			RenderTexture.active = prevActiveRT;
-			
-			Object.Destroy(tex);
-			RenderTexture.ReleaseTemporary(finalRT);
 			
 			return bytes.Length;
 		}
@@ -463,8 +507,11 @@ namespace ImageSynthesis
 		};
 
 		#endregion
-		#region Utility data 
+		
+		#region Utility data
 
+		const int c_depthSize = 24;
+		
 		// pass configuration (factory, kind of)
 		static readonly Dictionary<PassKind, CapturePass> s_allCapturePasses = new Dictionary<PassKind, CapturePass>
 		{
@@ -485,6 +532,12 @@ namespace ImageSynthesis
 
 		Camera m_cam;
 		CapturePass[] m_capturePasses;
+
+		RenderTexture m_renderTexture;
+		RenderTexture m_downscaledRenderTexture;
+
+		Texture2D m_texture;
+		Texture2D m_downscaledTexture;
 		
         Vector2Int m_downscaledDim;
 

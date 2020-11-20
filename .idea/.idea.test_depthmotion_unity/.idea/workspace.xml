@@ -20,18 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d049472-5739-4ba2-bd16-05eb0cc87b52" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/LICENSE.TXT" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DepthMotion.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DepthMotion/CameraRenderDepthMotion.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DepthMotion/CameraRenderDepthMotion.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Util/SnapshotSaver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Util/SnapshotSaver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParties.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParties/com.unity.mltoolkit" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParties/com.unity.mltoolkit.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ImageSynthesis.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/FrameCapturer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/FrameCapturer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +128,7 @@
       <workItem from="1605724631872" duration="5070000" />
       <workItem from="1605784485356" duration="10115000" />
       <workItem from="1605817046841" duration="3299000" />
-      <workItem from="1605885695573" duration="10858000" />
+      <workItem from="1605885695573" duration="12823000" />
     </task>
     <servers />
   </component>
