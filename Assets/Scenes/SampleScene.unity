@@ -311,7 +311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dim: {x: 1920, y: 1080}
-  downscalingFactor: 2
+  downscalingFactor: 1
   samplingStep: 1
   targets: 000000000300000005000000
   uberReplacementShader: {fileID: 4800000, guid: 171e6e515a12e4a298dce708924e98ba,

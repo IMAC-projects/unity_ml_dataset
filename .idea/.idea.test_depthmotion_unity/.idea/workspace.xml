@@ -19,14 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4d049472-5739-4ba2-bd16-05eb0cc87b52" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/indexLayout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="4d049472-5739-4ba2-bd16-05eb0cc87b52" name="Default Changelist" comment="[Improvement]: All targets now share the same resolution.">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/FrameCapturer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/FrameCapturer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +41,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///home/binabik/Documents/projets_gite/test/test_depthmotion_unity/Assets/Scripts/ImageSynthesis/FrameCapturer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/FrameCapturer.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
@@ -59,8 +56,8 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.71398306" />
-    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.6122881" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.71428573" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -79,15 +76,19 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="26701">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="26701" />
       <option name="selectedOptions">
         <list />
       </option>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Attach to Unity Editor.Attach to Unity Editor" />
+      <item itemvalue="Attach to Unity Editor.Attach to Unity Editor &amp; Play" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -115,8 +116,16 @@
       <workItem from="1605817046841" duration="3299000" />
       <workItem from="1605885695573" duration="14192000" />
       <workItem from="1605903494582" duration="241000" />
-      <workItem from="1610918442070" duration="828000" />
+      <workItem from="1610918442070" duration="2371000" />
     </task>
+    <task id="LOCAL-00001" summary="[Improvement]: All targets now share the same resolution.">
+      <created>1610919520920</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1610919520920</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,5 +147,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="[Improvement]: All targets now share the same resolution." />
+    <option name="LAST_COMMIT_MESSAGE" value="[Improvement]: All targets now share the same resolution." />
   </component>
 </project>

@@ -128,7 +128,7 @@ namespace ImageSynthesis
 			
 			m_capturePasses = new CapturePass[targets.Length];
 			// use real camera to capture final image
-			for (int q = 0; q < m_capturePasses.Length; q++)
+			for (int q = 0; q < m_capturePasses.Length; ++q)
 			{
 				m_capturePasses[q] = s_allCapturePasses[targets[q]];
 				m_capturePasses[q].camera = CreateHiddenCamera (m_capturePasses[q].name);
@@ -269,18 +269,14 @@ namespace ImageSynthesis
 		#region Capture and saving
         void SaveFrameStep()
         {
-            // We save at least a couple of those.
-            // So that they are both computed and the second gives the actual result.
-            // The first motion vector texture is discarded (if it is faulty, with the quick fix).
-            if (m_currentFrameIndex % samplingStep == 0
-                || (m_currentFrameIndex + 1) % samplingStep == 0)
+            if (ShouldCaptureCurrentFrame())
             {
+	            print(m_currentFrameIndex);
                 SaveFrame();
             }
             ++m_currentFrameIndex;
         }
         
-
 		public void SaveCapturePass(PassKind kind, int frameIndex)
 		{
 			// get capture pass of kind
@@ -305,8 +301,6 @@ namespace ImageSynthesis
 		
         void SaveFrame(int frameIndex)
         {
-            
-            // m_saver.SaveSnapshot(rectifiedFrameIndex, m_view, m_depth, m_motion);
             foreach (var kind in targets)
             {
                 // get and save the data 
@@ -388,7 +382,16 @@ namespace ImageSynthesis
 
 		#endregion
 		
-		#region Utility function 
+		#region Private utility
+
+		bool ShouldCaptureCurrentFrame()
+		{
+            // We save at least a couple of those.
+            // So that they are both computed and the second gives the actual result.
+            // The first motion vector texture is discarded (if it is faulty, with the quick fix).
+			return m_currentFrameIndex % samplingStep == 0
+			       || (m_currentFrameIndex + 1) % samplingStep == 0;
+		}
 
 		Camera CreateHiddenCamera(string name)
 		{
