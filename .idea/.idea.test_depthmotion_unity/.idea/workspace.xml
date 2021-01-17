@@ -20,11 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d049472-5739-4ba2-bd16-05eb0cc87b52" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/indexLayout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.test_depthmotion_unity/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/FrameCapturer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/FrameCapturer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Util/SnapshotSaver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Util/SnapshotSaver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,32 +45,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9FB01C8F-E0B3-4B83-A5E8-910B2372620D/46/43dd4cb3/ImageConversion.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E98ED036-8295-432E-8C11-E52D6243EE11/ff/79915b93/Vector2Int.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/FrameCapturer.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/Assets/Materials/See.shader" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Util/ReadOnlyAttribute.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/SimpleCameraController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/UnityTemplateProjects/SimpleCameraController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Behaviour/DontJustStandThere.cs" />
-        <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/Packages/unity.ml.imagetookit/package.json" />
-        <option value="$PROJECT_DIR$/Packages/com.unity.mlimagetookit/package.json" />
-        <option value="$PROJECT_DIR$/Packages/package.json" />
-        <option value="$PROJECT_DIR$/Packages/com.unity.mltoolkit/package.json" />
-        <option value="$PROJECT_DIR$/Packages/manifest.json" />
-        <option value="$PROJECT_DIR$/Assets/ThirdParties/com.unity.mltoolkit/ImageSynthesis/ExampleUI.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/DepthMotion/CameraRenderDepthMotion.cs" />
-        <option value="$PROJECT_DIR$/Assets/ThirdParties/com.unity.mltoolkit/ImageSynthesis/ImageSynthesis.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/ImageSynthesis.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/CaptureManager.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Util/SnapshotSaver.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/FrameCapturer.cs" />
-      </list>
-    </option>
+    <changedPaths>
+      <option value="$PROJECT_DIR$/Assets/Scripts/ImageSynthesis/FrameCapturer.cs" />
+    </changedPaths>
   </component>
   <component name="ProjectId" id="1jL2xa1lUY9bqI18rwpX68ov74p" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -81,8 +63,10 @@
     <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.6122881" />
     <property name="Discover.Launch.Via.Unity" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.environmentSetup" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
@@ -91,7 +75,7 @@
       <option name="listenPortForConnections" value="false" />
       <option name="pid" />
       <option name="selectedOptions">
-        <set />
+        <list />
       </option>
       <method v="2" />
     </configuration>
@@ -100,7 +84,7 @@
       <option name="listenPortForConnections" value="false" />
       <option name="pid" />
       <option name="selectedOptions">
-        <set />
+        <list />
       </option>
       <method v="2" />
     </configuration>
@@ -131,6 +115,7 @@
       <workItem from="1605817046841" duration="3299000" />
       <workItem from="1605885695573" duration="14192000" />
       <workItem from="1605903494582" duration="241000" />
+      <workItem from="1610918442070" duration="828000" />
     </task>
     <servers />
   </component>
@@ -153,87 +138,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="1010" y="168" key="#Inspection_severity" timestamp="1605730363588">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="1010" y="168" key="#Inspection_severity/0.0.1920.1040@0.0.1920.1040" timestamp="1605730363588" />
-    <state x="1031" y="164" key="#Plugins" timestamp="1605729314093">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="1031" y="164" key="#Plugins/0.0.1920.1040@0.0.1920.1040" timestamp="1605729314093" />
-    <state width="1919" height="158" key="GridCell.Tab.0.bottom" timestamp="1605901299135">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299135" />
-    <state width="1919" height="158" key="GridCell.Tab.0.center" timestamp="1605901299135">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299135" />
-    <state width="1919" height="158" key="GridCell.Tab.0.left" timestamp="1605901299135">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299135" />
-    <state width="1919" height="158" key="GridCell.Tab.0.right" timestamp="1605901299135">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299135" />
-    <state width="1919" height="158" key="GridCell.Tab.1.bottom" timestamp="1605901299136">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299136" />
-    <state width="1919" height="158" key="GridCell.Tab.1.center" timestamp="1605901299136">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299136" />
-    <state width="1919" height="158" key="GridCell.Tab.1.left" timestamp="1605901299136">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299136" />
-    <state width="1919" height="158" key="GridCell.Tab.1.right" timestamp="1605901299136">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299136" />
-    <state width="1919" height="158" key="GridCell.Tab.2.bottom" timestamp="1605901299137">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.2.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299137" />
-    <state width="1919" height="158" key="GridCell.Tab.2.center" timestamp="1605901299136">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.2.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299136" />
-    <state width="1919" height="158" key="GridCell.Tab.2.left" timestamp="1605901299136">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.2.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299136" />
-    <state width="1919" height="158" key="GridCell.Tab.2.right" timestamp="1605901299136">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299136" />
-    <state width="1919" height="158" key="GridCell.Tab.3.bottom" timestamp="1605901299137">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.3.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299137" />
-    <state width="1919" height="158" key="GridCell.Tab.3.center" timestamp="1605901299137">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.3.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299137" />
-    <state width="1919" height="158" key="GridCell.Tab.3.left" timestamp="1605901299137">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.3.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299137" />
-    <state width="1919" height="158" key="GridCell.Tab.3.right" timestamp="1605901299137">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1919" height="158" key="GridCell.Tab.3.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605901299137" />
-    <state x="92" y="92" width="1736" height="856" key="VCS.FileHistoryDialog" timestamp="1604999431300">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="92" y="92" width="1736" height="856" key="VCS.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1604999431300" />
-    <state x="1209" y="230" width="672" height="678" key="search.everywhere.popup" timestamp="1605792690750">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="1209" y="230" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1605792690750" />
   </component>
 </project>

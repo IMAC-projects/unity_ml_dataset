@@ -25,8 +25,8 @@ namespace ImageSynthesis
 		
         public Vector2Int dim = new Vector2Int(1920, 1080);
         // todo: this one should be a power of two, create an attribute for it.
-        [RangeAttribute(2, 8)]
-        public int downscalingFactor = 4;
+        [RangeAttribute(1, 8)]
+        public int downscalingFactor = 1;
         
         [RangeAttribute(1, 500)]
         public int samplingStep = 1;
@@ -39,8 +39,6 @@ namespace ImageSynthesis
 		public float opticalFlowSensitivity = 1.0f;
 		
 		#endregion
-		
-
 
 		#region Public structs 
 
@@ -126,7 +124,7 @@ namespace ImageSynthesis
 			// Set the non-downscaled screen resolution as requested.
 			Screen.SetResolution(dim.x, dim.y, Screen.fullScreenMode);
 			
-            m_downscaledDim = dim / downscalingFactor;
+            m_dim = dim / downscalingFactor;
 			
 			m_capturePasses = new CapturePass[targets.Length];
 			// use real camera to capture final image
@@ -135,16 +133,12 @@ namespace ImageSynthesis
 				m_capturePasses[q] = s_allCapturePasses[targets[q]];
 				m_capturePasses[q].camera = CreateHiddenCamera (m_capturePasses[q].name);
 				bool needsRecale = m_capturePasses[q].kind == PassKind.EFlow;
-				Vector2Int dim_ = m_capturePasses[q].kind == PassKind.EImage
-					? dim
-					: m_downscaledDim;
-				
-				m_capturePasses[q].CreateTextures(dim_.x, dim_.y, needsRecale);
+				m_capturePasses[q].CreateTextures(m_dim.x, m_dim.y, needsRecale);
 			}
 			
             m_fullRenderTexture = RenderTexture.GetTemporary(
-					dim.x, 
-					dim.y, 
+					m_dim.x, 
+					m_dim.y, 
 					c_depthSize, 
 					RenderTextureFormat.Default, 
 					RenderTextureReadWrite.Default
@@ -472,7 +466,6 @@ namespace ImageSynthesis
 			cam.depthTextureMode = depthTextureMode;
 		}
 		
-
 		#endregion
 		
 		#region Internal structs
@@ -506,6 +499,7 @@ namespace ImageSynthesis
 
 		#region Private data
 		
+        Vector2Int m_dim;
 		// cached materials
 		Material m_opticalFlowMaterial;
 
@@ -514,10 +508,7 @@ namespace ImageSynthesis
 
 		RenderTexture m_fullRenderTexture;
 
-        Vector2Int m_downscaledDim;
-
         byte[] m_outBuffer;
-        byte[] m_downscaledOutBuffer;
 
         Util.SnapshotSaver m_saver;
         
@@ -573,7 +564,6 @@ namespace ImageSynthesis
 			return change;
 		}
 		#endif // UNITY_EDITOR
-		
 
 		#endregion
 	}
