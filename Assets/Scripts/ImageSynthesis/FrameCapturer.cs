@@ -20,23 +20,24 @@ namespace ImageSynthesis
 	[RequireComponent (typeof(Camera))]
 	public class FrameCapturer : MonoBehaviour
 	{
-		
+
 		#region Serialised parameters
-		
-        public Vector2Int dim = new Vector2Int(1920, 1080);
+
+		[SerializeField] Vector2Int dim = new Vector2Int(1920, 1080);
         // todo: this one should be a power of two, create an attribute for it.
         [RangeAttribute(1, 8)]
-        public int downscalingFactor = 1;
+		[SerializeField] int downscalingFactor = 1;
         
         [RangeAttribute(1, 500)]
-        public int samplingStep = 1;
+		[SerializeField] int samplingStep = 1;
 
-		public PassKind[] targets;
+		[SerializeField] PassKind[] targets;
 
-		public Shader uberReplacementShader;
-		public Shader opticalFlowShader;
+		[SerializeField] Shader uberReplacementShader;
+		[SerializeField] Shader opticalFlowShader;
 
-		public float opticalFlowSensitivity = 1.0f;
+		[SerializeField] float opticalFlowSensitivity = 1.0f;
+		[SerializeField] int frameRate = 30;
 		
 		#endregion
 
@@ -166,6 +167,8 @@ namespace ImageSynthesis
 
 		void Start()
 		{
+			Time.captureFramerate = frameRate;
+
 			// default fallbacks, if shaders are unspecified
 			if (!uberReplacementShader)
 			{

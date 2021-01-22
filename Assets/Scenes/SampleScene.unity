@@ -317,11 +317,11 @@ MonoBehaviour:
   downscalingFactor: 1
   samplingStep: 1
   targets: 000000000300000005000000
-  opticalFlowRT: {fileID: 0}
   uberReplacementShader: {fileID: 4800000, guid: 171e6e515a12e4a298dce708924e98ba,
     type: 3}
   opticalFlowShader: {fileID: 4800000, guid: 2a970eca3c9e84f13b5b616e530a7919, type: 3}
   opticalFlowSensitivity: 5.37
+  frameRate: 60
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
